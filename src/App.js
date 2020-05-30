@@ -1,26 +1,75 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+
+
+import Home from './Home'
+import Certificates from './Certificates'
+
+export default class App extends React.Component {
+
+  state = { storageValue: 0, web3: null, accounts: null, contract: null };
+
+  componentDidMount = async () => {
+    try {
+      // Get network provider and web3 instance.
+     // const web3 = await getWeb3();
+
+      // Use web3 to get the user's accounts.
+     // const accounts = await web3.eth.getAccounts();
+
+      // Get the contract instance.
+     // const networkId = await web3.eth.net.getId();
+
+      // Set web3, accounts, and contract to the state, and then proceed with an
+      // example of interacting with the contract's methods.
+     // this.setState({ web3, accounts, });
+    } catch (error) {
+      // Catch any errors for any of the above operations.
+      alert(
+          `Failed to load web3, accounts, or contract. Check console for details.`,
+      );
+      console.error(error);
+    }
+  }
+
+  render() {
+    return (
+        <div>
+
+
+          <Navbar>
+            <Navbar.Brand href="/">Staking Loans</Navbar.Brand>
+            <Nav>
+              <Nav.Link href="/Certificates">Certificates</Nav.Link>
+            </Nav>
+          </Navbar>
+          <div className="topRightCorner">
+            {
+              (this.state.web3 === null)?
+                  <div></div>
+                  :
+                  <p style={{color:"midnightblue", fontSize:16}}>{this.state.accounts[0]}</p>
+
+            }
+          </div>
+
+
+
+          <Router>
+            <Switch>
+              <Route exact path="/" component={Home}/>
+              <Route path="/Certificates" component={Certificates}/>
+            </Switch>
+          </Router>
+        </div>
+    );
+  }
 }
-
-export default App;
