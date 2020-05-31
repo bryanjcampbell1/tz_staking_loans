@@ -20,6 +20,10 @@ class Home extends Component {
             betModalShow:false,
             web3:null,
             accounts: null,
+            deposit:0,
+            duration:0,
+            currency:'XTZ',
+            returnRate: 0
 
         }
     }
@@ -44,88 +48,98 @@ class Home extends Component {
         //this.forceUpdate();
     }
 
-    updateQuantity(e){
-        this.setState({quantity:e})
+    updateForm(a,b){
+        console.log(a);
+        console.log(b);
+
+        this.setState({[`${a}`]:b})
+    }
+
+    setReturnRate(e){
+        if(e==='3 Months'){
+            this.setState({returnRate: 0.01})
+        }
+        else if(e==='6 Months'){
+            this.setState({returnRate: 0.021})
+        }
+        else if(e==='9 Months'){
+            this.setState({returnRate: 0.033})
+        }
+        else if(e==='1 Year'){
+            this.setState({returnRate: 0.0406})
+        }
+        else if(e==='15 Months'){
+            this.setState({returnRate: 0.0510})
+        }
+        else if(e==='18 Months'){
+            this.setState({returnRate: 0.0615})
+        }
+        else if(e==='21 Months'){
+            this.setState({returnRate: 0.0721})
+        }
+        else{
+            this.setState({returnRate: 0.0829})
+        }
+
     }
 
 
     render() {
         return (
             <div>
-                {/*
-                <Row>
-                    <Col style={{ background: 'whitesmoke',textAlign: 'center', height:180}}>
-
-                    </Col>
-                </Row>
-                */}
                 <Row style={{marginTop:50}}>
                     <Col></Col>
 
-                    <Col xs={6} >
-                                <Form>
-                                    <Form.Group as={Row} controlId="formPlaintextEmail">
-                                        <Form.Label column sm="3">
-                                            Deposit Amount
-                                        </Form.Label>
-                                        <Col sm="9" >
-                                            <InputGroup className="mb-3" style={{width:300}}>
-                                                <FormControl
-                                                    placeholder="0"
-                                                    aria-label="Recipient's username"
-                                                    aria-describedby="basic-addon2"
-                                                />
-                                                <InputGroup.Append>
-                                                    <InputGroup.Text id="basic-addon2">XTZ</InputGroup.Text>
-                                                </InputGroup.Append>
-                                            </InputGroup>
-                                        </Col>
-                                    </Form.Group>
+                    <Col xs={4} >
+                        <Form>
+                            <Form.Group as={Row} controlId="deposit">
+                                <Form.Label>Deposit Amount</Form.Label>
+                                <InputGroup className="mb-3">
+                                    <FormControl
+                                        placeholder="0"
+                                        aria-label="Deposit"
+                                        aria-describedby="basic-addon1"
+                                        onChange={(e)=> this.updateForm(e.target.id, e.target.value)}
+                                    />
+                                    <InputGroup.Append>
+                                        <InputGroup.Text id="basic-addon2">XTZ</InputGroup.Text>
+                                    </InputGroup.Append>
+                                </InputGroup>
+                            </Form.Group>
 
-                                    <Form.Group as={Row} controlId="formPlaintextEmail">
-                                        <Form.Label column sm="3">
-                                            Lockup Period
-                                        </Form.Label>
-                                        <Col sm="9">
-                                            <DropdownButton id="dropdown-basic-button" title="Duration" style={{width:300}}>
-                                                <Dropdown.Item href="#/action-1">3 Months</Dropdown.Item>
-                                                <Dropdown.Item href="#/action-2">6 Months</Dropdown.Item>
-                                                <Dropdown.Item href="#/action-3">9 Months</Dropdown.Item>
-                                                <Dropdown.Item href="#/action-4">1 Year</Dropdown.Item>
-                                                <Dropdown.Item href="#/action-5">15 Months</Dropdown.Item>
-                                                <Dropdown.Item href="#/action-6">18 Months</Dropdown.Item>
-                                                <Dropdown.Item href="#/action-7">21 Months</Dropdown.Item>
-                                                <Dropdown.Item href="#/action-8">2 Years</Dropdown.Item>
-                                            </DropdownButton>
-                                        </Col>
-                                    </Form.Group>
+                            <Form.Group as={Row} controlId="duration" style={{marginTop:-20}}>
+                                <Form.Label>Lockup Period</Form.Label>
+                                <Form.Control as="select"
+                                              onChange={(e)=> this.setReturnRate(e.target.value)}>
+                                    <option>3 Months</option>
+                                    <option>6 Months</option>
+                                    <option>9 Months</option>
+                                    <option>1 Year</option>
+                                    <option>15 Months</option>
+                                    <option>18 Months</option>
+                                    <option>21 Months</option>
+                                    <option>2 Years</option>
+                                </Form.Control>
+                            </Form.Group>
 
-                                    <Form.Group as={Row} controlId="formPlaintextEmail">
-                                        <Form.Label column sm="3">
-                                            Return Type
-                                        </Form.Label>
-                                        <Col sm="9">
-                                            <DropdownButton id="dropdown-basic-button" title="Currency" style={{width:300}}>
-                                                <Dropdown.Item href="#/action-1">XTZ</Dropdown.Item>
-                                                <Dropdown.Item href="#/action-2">USDtz</Dropdown.Item>
-                                                <Dropdown.Item href="#/action-3">tzBTC</Dropdown.Item>
-                                            </DropdownButton>
-                                        </Col>
-                                    </Form.Group>
+                            <Form.Group as={Row} controlId="currency" style={{marginTop:10}}>
+                                <Form.Label>Return Currency</Form.Label>
+                                <Form.Control as="select"
+                                              onChange={(e)=> this.updateForm(e.target.id, e.target.value)}>
+                                    <option>XTZ</option>
+                                    <option>USDtz</option>
+                                    <option>tzBTC</option>
+                                </Form.Control>
+                            </Form.Group>
 
-
-                                </Form>
-
-
-
-                        <div style={{display:'flex', justifyContent:'center'}}>
-                            <Card style={{backgroundColor:'lightblue', width:300, height:100}}>
+                        </Form>
+                        <div style={{display:'flex', justifyContent:'center', marginTop:35}}>
+                            <Card style={{backgroundColor:'lightblue', width:'70%', height:100}}>
                                 <p>Return</p>
-                                <div><p style={{display:'flex', justifyContent:'center'}}>24 USDtz</p></div>
-
+                                <div><p style={{display:'flex', justifyContent:'center'}}>{this.state.deposit*this.state.returnRate} {this.state.currency}</p></div>
                             </Card>
                         </div>
-                        <div style={{display:'flex', justifyContent:'center', marginTop:40}}>
+                        <div style={{display:'flex', justifyContent:'center', marginTop:35}}>
                             <Button size="lg"> Get Stake Now </Button>
                         </div>
                     </Col>
