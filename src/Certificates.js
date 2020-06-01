@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button, Row, Col, InputGroup, Modal, Card } from 'react-bootstrap';
 
 let c1 = {
-    id: 12,
+    id: 320,
     amount: 100,
     date: "8/3/22"
 }
@@ -13,7 +13,7 @@ let c2 = {
     date: "9/3/22"
 }
 let c3 = {
-    id: 17,
+    id: 1007,
     amount: 100,
     date: "10/13/22"
 }
@@ -23,12 +23,18 @@ let mock_data = [c1,c2,c3];
 
 
 const Certificate = (props) =>{
+
+    let rVal = 255*(props.id)/(props.id +255)
+    let gVal = 255*(props.id)/(props.id*props.id)
+    let bVal = 255 - 255*(props.id)/(props.id*props.id)
+
+    let rgb = `rgb(${rVal}, ${gVal}, ${bVal})`
     return(
       <div>
           <Card style={{padding:20, width:300}}>
               <Card.Body>
                   <div style={{display:'flex', justifyContent:'center'}}>
-                      <div style={{borderRadius:'50%', height:50, width:50, backgroundColor:'red'}}></div>
+                      <div style={{borderRadius:'50%', height:50, width:50, backgroundColor:rgb }}></div>
                   </div>
                   <div>
                       <div style={{display:'flex', marginTop:20}}>
