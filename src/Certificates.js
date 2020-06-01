@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Button, Row, Col, InputGroup, Modal, Card } from 'react-bootstrap';
 import SendModal from "./SendModal";
 import UnlockEarlyModal from "./UnlockEarlyModal";
-import PreviewModal from "./PreviewModal";
 
 let c1 = {
     id: 320,
@@ -32,6 +31,7 @@ const Certificate = (props) =>{
     let bVal = 255 - 255*(props.id)/(props.id*props.id)
 
     let rgb = `rgb(${rVal}, ${gVal}, ${bVal})`
+
     return(
       <div>
           <Card style={{padding:20, width:300}}>

@@ -11,7 +11,7 @@ class UnlockEarlyModal extends Component {
         }
     }
 
-    createCertificate(){
+    unlock(){
         console.log('here');
         this.setState({screen: 2});
     }
@@ -41,45 +41,31 @@ class UnlockEarlyModal extends Component {
                                         <div style={{display:'flex', justifyContent:'flex-end'}}>
                                             <X color="slate" size={20} onClick={() => this.hideModal()}/>
                                         </div>
-                                        <p style={{color:'slate', fontSize:14, fontWeight:'bold', marginTop:20}}>Review Buy</p>
+                                        <p style={{color:'slate', fontSize:14, fontWeight:'bold', marginTop:20}}>Unlock Early</p>
 
                                         <Card style={{backgroundColor:'whitesmoke'}}>
                                             <Card.Body>
-                                                <div style={{display:'flex'}}><p style={{fontWeight:'bold', fontSize:14, color:'slate'}}>Artist:&nbsp;</p><p style={{fontSize:14, color:'slate'}}>Travis Scott</p></div>
 
-                                                <div style={{display:'flex'}}>
-                                                    <p style={{color:'seagreen', fontSize:14}}> Available Shares </p>
-                                                    <p style={{fontSize:14, color:'slate'}}>&nbsp; | &nbsp; </p>
-                                                    <p style={{fontSize:14, color:'slate'}}> DAI per Share</p>
-                                                    <p style={{fontSize:14, color:'slate'}}>&nbsp; | &nbsp; </p>
-                                                    <p style={{fontSize:14, color:'slate'}}>Settled on advar</p>
+                                                <p style={{fontWeight:'bold', fontSize:14, color:'slate'}}>
+                                                    To unlock early you must pay back the stake you received up front.
+                                                </p>
+                                                <div style={{display:'flex', justifyContent:'center'}}>
+                                                    <p style={{fontWeight:'bold', fontSize:14, color:'grey'}}>
+                                                        (13.50 XTX)
+                                                    </p>
                                                 </div>
-
-                                                <hr/>
-                                                <div style={{display:'flex'}}>
-                                                    <div>
-                                                        <p style={{fontSize:14, color:'slate', fontWeight:'bold', marginTop:5 }}>Quantity:&nbsp;</p>
-                                                    </div>
-                                                    <div>
-                                                        <p style={{fontSize:14, color:'slate', fontWeight:'bold', marginTop:5 }}>ss</p>
-                                                    </div>
-                                                </div>
-                                                <div style={{display:'flex'}}>
-                                                    <p style={{fontSize:14, color:'slate', fontWeight:'bold'}}>Price:&nbsp;</p>
-                                                    <p style={{fontSize:14, color:'slate', }}>sss  DAI</p>
-                                                    <p style={{fontSize:12, color:'grey', fontStyle:'italic', marginLeft:4 , marginTop:2}}>+2.99 DAI (fee) </p>
-                                                </div>
-                                                <hr/>
-                                                <div style={{display:'flex'}}>
-                                                    <p style={{fontSize:14, color:'slate', fontWeight:'bold'}}>Total:&nbsp;</p>
-                                                    <p style={{fontSize:14, color:'slate', }}>{300 + 2.99}  DAI</p>
+                                                <p style={{fontWeight:'bold', fontSize:14, color:'slate'}}>
+                                                    Subtracting the stake from your certificate value leaves you with a return of
+                                                </p>
+                                                <div style={{display:'flex', justifyContent:'center'}}>
+                                                    <p style={{color:'slate', fontSize:24, fontWeight:'bold', marginTop:20}}>89 XTZ</p>
                                                 </div>
 
                                             </Card.Body>
                                         </Card>
 
                                         <div style={{display:'flex', justifyContent:'center', marginTop:40 }}>
-                                            <Button size="lg" onClick={() => this.createCertificate()  } style={{color:'white', backgroundColor:'seagreen'}}>Preview Buy</Button>
+                                            <Button size="lg" onClick={() => this.unlock()  } style={{color:'white', backgroundColor:'seagreen'}}>Unlock</Button>
                                         </div>
                                     </div>);
                                 case 2:
