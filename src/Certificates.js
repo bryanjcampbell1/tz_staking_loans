@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Button, Row, Col, InputGroup, Modal, Card } from 'react-bootstrap';
+import { Button, Row, Col, Card } from 'react-bootstrap';
 import SendModal from "./SendModal";
 import UnlockEarlyModal from "./UnlockEarlyModal";
+import UnlockModal from "./UnlockModal";
 
 let c1 = {
     id: 320,
@@ -57,7 +58,13 @@ const Certificate = (props) =>{
                           <Button onClick={() => props.showSend()} style={{width:150, backgroundColor:'lightblue', borderColor:'lightblue'}}>Send</Button>
                       </div>
                       <div style={{display:'flex', justifyContent:'center', marginTop:20}}>
-                          <Button onClick={() => props.showUnlock()} style={{width:150}} >Unlock Early</Button>
+                          {
+                              (props.unlocked)?
+                                  <Button onClick={() => props.showUnlock()} style={{width:150}} >Unlock</Button>
+                                  :
+                                  <Button onClick={() => props.showUnlockEarly()} style={{width:150}} >Unlock Early</Button>
+
+                          }
                       </div>
                   </div>
 
@@ -74,6 +81,7 @@ class Certificates extends Component {
         this.state = { account: '',
             sendModalShow: false,
             unlockModalShow:false,
+            unlockEarlyModalShow:false,
             web3:null,
             accounts: null,
         }
@@ -95,7 +103,7 @@ class Certificates extends Component {
     }
 
     hideModals(){
-        this.setState({unlockModalShow: false,sendModalShow:false })
+        this.setState({unlockEarlyModalShow:false, unlockModalShow: false,sendModalShow:false })
         this.forceUpdate();
     }
 
@@ -124,6 +132,8 @@ class Certificates extends Component {
                                                  id={row.id}
                                                  showSend={() => this.setState({sendModalShow:true})}
                                                  showUnlock={() => this.setState({unlockModalShow:true})}
+                                                 showUnlockEarly={() => this.setState({unlockEarlyModalShow:true})}
+                                                 unlocked={true}
                                     />
                                 </div>
                             )
@@ -137,6 +147,11 @@ class Certificates extends Component {
 
                 />
                 <UnlockEarlyModal
+                    show={this.state.unlockEarlyModalShow}
+                    onHide={() => this.hideModals()}
+
+                />
+                <UnlockModal
                     show={this.state.unlockModalShow}
                     onHide={() => this.hideModals()}
 

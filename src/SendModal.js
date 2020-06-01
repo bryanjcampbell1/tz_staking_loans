@@ -42,10 +42,10 @@ class SendModal extends Component {
                                         <div style={{display:'flex', justifyContent:'flex-end'}}>
                                             <X color="slate" size={20} onClick={() => this.hideModal()}/>
                                         </div>
-                                        <p style={{color:'slate', fontSize:14, fontWeight:'bold', marginTop:20}}>Send Certificate</p>
+                                        <p style={{color:'slate', fontSize:14, fontWeight:'bold',marginTop:5}}>Send Certificate</p>
 
                                         <Form.Group controlId="sendAddress">
-                                            <Form.Label style={{color:'slate', fontSize:14, marginTop:20}}>Receiving Address</Form.Label>
+                                            <Form.Label style={{color:'slate', fontSize:14, }}>Receiving Address</Form.Label>
                                             <InputGroup className="mb-3">
                                                 <FormControl
                                                     placeholder="tz1..."
@@ -70,7 +70,7 @@ class SendModal extends Component {
                                             </Card.Body>
                                         </Card>
 
-                                        <div style={{display:'flex', justifyContent:'center', marginTop:40 }}>
+                                        <div style={{display:'flex', justifyContent:'center', marginTop:15 }}>
                                             <Button size="lg" onClick={() => this.send()  } style={{color:'white', backgroundColor:'seagreen'}}>Send</Button>
                                         </div>
                                     </div>);
@@ -83,12 +83,13 @@ class SendModal extends Component {
                                             <p style={{color:'grey',
                                                 fontSize:14,
                                                 fontWeight:'bold',
-                                                marginTop:20}}>Congratulations, you successfully sent the certificate!
+                                                marginTop:5,
+                                                }}>Congratulations, you successfully sent the certificate!
                                             </p>
 
-                                            <Card style={{backgroundColor:''}}>
+                                            <Card style={{backgroundColor:'',marginTop:10}}>
                                                 <Card.Body>
-                                                    <div style={{display:'flex'}}>
+                                                    <div style={{display:'flex', marginTop:10}} >
                                                         <p style={{fontWeight:'bold', fontSize:14, color:'slate'}}>Transaction Hash</p>
                                                         <p style={{fontSize:14, color:'slate'}}>&nbsp; | &nbsp; </p>
                                                         <p style={{fontSize:14, color:'slate'}}> ooasdaradreraravafvafvafdfv</p>
@@ -96,9 +97,9 @@ class SendModal extends Component {
                                                 </Card.Body>
                                             </Card>
                                             <div style={{display:'flex'}}>
-                                                <p style={{fontSize:14, color:'grey', marginTop:30}}>You may now check the Certificates page for updates</p>
+                                                <p style={{fontSize:14, color:'grey', marginTop:20}}>You may now check the Certificates page for updates</p>
                                             </div>
-                                            <div style={{display:'flex', justifyContent:'center', marginTop:30 }}>
+                                            <div style={{display:'flex', justifyContent:'center', marginTop:10, marginBottom:10 }}>
                                                 <Button size="lg" onClick={() => this.hideModal()} style={{ background:'whitesmoke', fontSize:22, color:'slategray', width:150,}}>
                                                     Ok
                                                 </Button>

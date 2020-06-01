@@ -3,7 +3,7 @@ import {Button, Modal, Card,} from 'react-bootstrap';
 
 import {X} from 'react-bootstrap-icons';
 
-class UnlockEarlyModal extends Component {
+class UnlockModal extends Component {
     constructor(props) {
         super(props)
         this.state = {screen: 1,
@@ -41,30 +41,25 @@ class UnlockEarlyModal extends Component {
                                         <div style={{display:'flex', justifyContent:'flex-end'}}>
                                             <X color="slate" size={20} onClick={() => this.hideModal()}/>
                                         </div>
-                                        <p style={{color:'slate', fontSize:14, fontWeight:'bold', marginTop:5}}>Unlock Early</p>
+                                        <p style={{color:'slate', fontSize:14, fontWeight:'bold', marginTop:5}}>Unlock Certificate</p>
 
                                         <Card style={{backgroundColor:'whitesmoke'}}>
                                             <Card.Body>
-
                                                 <p style={{fontWeight:'bold', fontSize:14, color:'slate'}}>
-                                                    To unlock early you must pay back the stake you received up front.
+                                                    Unlocking will free the XTZ in the certificate and transfer the funds to your account
                                                 </p>
-                                                <div style={{display:'flex', justifyContent:'center',marginTop:-10}}>
-                                                    <p style={{fontWeight:'bold', fontSize:16, color:'grey'}}>
-                                                        (13.50 XTX)
-                                                    </p>
-                                                </div>
-                                                <p style={{fontWeight:'bold', fontSize:14, color:'slate',marginTop:10}}>
-                                                    Subtracting the stake from your certificate value leaves you with a return of
+                                                <hr/>
+                                                <p style={{fontWeight:'bold', fontSize:14, color:'slate',}}>
+                                                    Returning Funds
                                                 </p>
                                                 <div style={{display:'flex', justifyContent:'center'}}>
-                                                    <p style={{color:'slate', fontSize:22, fontWeight:'bold', }}>89 XTZ</p>
+                                                    <p style={{color:'slate', fontSize:22, fontWeight:'bold', }}>100 XTZ</p>
                                                 </div>
 
                                             </Card.Body>
                                         </Card>
 
-                                        <div style={{display:'flex', justifyContent:'center', marginTop:20, marginBottom:10 }}>
+                                        <div style={{display:'flex', justifyContent:'center', marginTop:20, marginBottom:0 }}>
                                             <Button size="lg" onClick={() => this.unlock()  } style={{color:'white', backgroundColor:'seagreen'}}>Unlock</Button>
                                         </div>
                                     </div>);
@@ -109,7 +104,7 @@ class UnlockEarlyModal extends Component {
     }
 }
 
-export default UnlockEarlyModal;
+export default UnlockModal;
 
 
 
