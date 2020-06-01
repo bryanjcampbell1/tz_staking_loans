@@ -63,7 +63,7 @@ class SendModal extends Component {
 
                                                 <div style={{display:'flex'}}>
                                                     <p style={{color:'slate', fontSize:14}}>
-                                                        Transfer of Tezos IOU Certificate redeemable for 100 XTZ on the date of 9/12/22
+                                                        Transfer of Tezos IOU Certificate redeemable for {this.props.amount} XTZ on the date of {this.props.date}
                                                     </p>
                                                 </div>
 

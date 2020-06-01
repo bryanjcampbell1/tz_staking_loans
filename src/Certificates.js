@@ -84,6 +84,8 @@ class Certificates extends Component {
             unlockEarlyModalShow:false,
             web3:null,
             accounts: null,
+            certsArray: mock_data,
+            index:0
         }
     }
 
@@ -102,6 +104,9 @@ class Certificates extends Component {
         }
     }
 
+    clicked(e){
+        console.log("yo", e);
+    }
     hideModals(){
         this.setState({unlockEarlyModalShow:false, unlockModalShow: false,sendModalShow:false })
         this.forceUpdate();
@@ -125,15 +130,15 @@ class Certificates extends Component {
                                     marginTop:-15
                                     }}>
                         {
-                            mock_data.map((row) =>
+                            this.state.certsArray.map((row, key) =>
                                 <div style={{marginTop:20}}>
                                     <Certificate amount={row.amount}
                                                  date={row.date}
                                                  id={row.id}
-                                                 showSend={() => this.setState({sendModalShow:true})}
-                                                 showUnlock={() => this.setState({unlockModalShow:true})}
-                                                 showUnlockEarly={() => this.setState({unlockEarlyModalShow:true})}
-                                                 unlocked={true}
+                                                 showSend={() => this.setState({sendModalShow:true, index:key})}
+                                                 showUnlock={() => this.setState({unlockModalShow:true, index:key})}
+                                                 showUnlockEarly={() => this.setState({unlockEarlyModalShow:true, index:key})}
+                                                 unlocked={false}
                                     />
                                 </div>
                             )
@@ -144,17 +149,16 @@ class Certificates extends Component {
                 <SendModal
                     show={this.state.sendModalShow}
                     onHide={() => this.hideModals()}
-
+                    amount={this.state.certsArray[this.state.index].amount}
+                    date={this.state.certsArray[this.state.index].date}
                 />
                 <UnlockEarlyModal
                     show={this.state.unlockEarlyModalShow}
                     onHide={() => this.hideModals()}
-
                 />
                 <UnlockModal
                     show={this.state.unlockModalShow}
                     onHide={() => this.hideModals()}
-
                 />
             </div>
         )

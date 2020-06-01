@@ -46,7 +46,7 @@ export default class App extends React.Component {
 
 
           <Navbar style={{backgroundColor:'lightblue'}}>
-            <Navbar.Brand href="/">Staking Loans</Navbar.Brand>
+            <Navbar.Brand href="/" style={{marginLeft:5}}>Staking Loans</Navbar.Brand>
             <Nav>
               <Nav.Link href="/Certificates">Certificates</Nav.Link>
             </Nav>
