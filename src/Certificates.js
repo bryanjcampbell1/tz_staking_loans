@@ -7,17 +7,20 @@ import UnlockModal from "./UnlockModal";
 let c1 = {
     id: 320,
     amount: 100,
+    stakePaid:12,
     date: "8/3/22"
 }
 
 let c2 = {
     id: 13,
     amount: 80,
+    stakePaid:8,
     date: "9/3/22"
 }
 let c3 = {
     id: 1007,
-    amount: 100,
+    amount: 1000,
+    stakePaid:26,
     date: "10/13/22"
 }
 
@@ -138,7 +141,7 @@ class Certificates extends Component {
                                                  showSend={() => this.setState({sendModalShow:true, index:key})}
                                                  showUnlock={() => this.setState({unlockModalShow:true, index:key})}
                                                  showUnlockEarly={() => this.setState({unlockEarlyModalShow:true, index:key})}
-                                                 unlocked={false}
+                                                 unlocked={true}
                                     />
                                 </div>
                             )
@@ -155,10 +158,16 @@ class Certificates extends Component {
                 <UnlockEarlyModal
                     show={this.state.unlockEarlyModalShow}
                     onHide={() => this.hideModals()}
+                    amount={this.state.certsArray[this.state.index].amount}
+                    date={this.state.certsArray[this.state.index].date}
+                    stake={this.state.certsArray[this.state.index].stakePaid}
                 />
                 <UnlockModal
                     show={this.state.unlockModalShow}
                     onHide={() => this.hideModals()}
+                    amount={this.state.certsArray[this.state.index].amount}
+                    date={this.state.certsArray[this.state.index].date}
+                    stake={this.state.certsArray[this.state.index].stakePaid}
                 />
             </div>
         )

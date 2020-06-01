@@ -53,7 +53,7 @@ class UnlockModal extends Component {
                                                     Returning Funds
                                                 </p>
                                                 <div style={{display:'flex', justifyContent:'center'}}>
-                                                    <p style={{color:'slate', fontSize:22, fontWeight:'bold', }}>100 XTZ</p>
+                                                    <p style={{color:'slate', fontSize:22, fontWeight:'bold', }}>{this.props.amount} XTZ</p>
                                                 </div>
 
                                             </Card.Body>
@@ -76,7 +76,7 @@ class UnlockModal extends Component {
 
                                             <Card style={{backgroundColor:''}}>
                                                 <Card.Body>
-                                                    <p style={{fontWeight:'bold', fontSize:14, color:'slate',marginTop:10}}>100 XTZ has been returned to your account</p>
+                                                    <p style={{fontWeight:'bold', fontSize:14, color:'slate',marginTop:10}}>{this.props.amount} XTZ has been returned to your account</p>
                                                     <div style={{display:'flex'}}>
                                                         <p style={{fontWeight:'bold', fontSize:14, color:'slate'}}>Transaction Hash</p>
                                                         <p style={{fontSize:14, color:'slate'}}>&nbsp; | &nbsp; </p>

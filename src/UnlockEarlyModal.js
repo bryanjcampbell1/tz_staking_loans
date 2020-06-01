@@ -51,14 +51,16 @@ class UnlockEarlyModal extends Component {
                                                 </p>
                                                 <div style={{display:'flex', justifyContent:'center',marginTop:-10}}>
                                                     <p style={{fontWeight:'bold', fontSize:16, color:'grey'}}>
-                                                        (13.50 XTX)
+                                                        ({Number(this.props.stake)} XTZ)
                                                     </p>
                                                 </div>
                                                 <p style={{fontWeight:'bold', fontSize:14, color:'slate',marginTop:10}}>
                                                     Subtracting the stake from your certificate value leaves you with a return of
                                                 </p>
                                                 <div style={{display:'flex', justifyContent:'center'}}>
-                                                    <p style={{color:'slate', fontSize:22, fontWeight:'bold', }}>89 XTZ</p>
+                                                    <p style={{color:'slate', fontSize:22, fontWeight:'bold', }}>
+                                                        {this.props.amount - this.props.stake} XTZ
+                                                    </p>
                                                 </div>
 
                                             </Card.Body>
@@ -81,7 +83,7 @@ class UnlockEarlyModal extends Component {
 
                                             <Card style={{backgroundColor:''}}>
                                                 <Card.Body>
-                                                    <p style={{fontWeight:'bold', fontSize:14, color:'slate',marginTop:10}}>100 XTZ has been returned to your account</p>
+                                                    <p style={{fontWeight:'bold', fontSize:14, color:'slate',marginTop:10}}>{this.props.amount - this.props.stake} XTZ has been returned to your account</p>
                                                     <div style={{display:'flex'}}>
                                                         <p style={{fontWeight:'bold', fontSize:14, color:'slate'}}>Transaction Hash</p>
                                                         <p style={{fontSize:14, color:'slate'}}>&nbsp; | &nbsp; </p>
