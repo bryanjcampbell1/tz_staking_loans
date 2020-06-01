@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { Button, Row, Col, InputGroup, Modal, Card } from 'react-bootstrap';
+import SendModal from "./SendModal";
+import UnlockEarlyModal from "./UnlockEarlyModal";
+import PreviewModal from "./PreviewModal";
 
 let c1 = {
     id: 320,
@@ -34,6 +37,9 @@ const Certificate = (props) =>{
           <Card style={{padding:20, width:300}}>
               <Card.Body>
                   <div style={{display:'flex', justifyContent:'center'}}>
+                      <p style={{color:'slate', fontSize:14, fontWeight:'bold',marginTop:-20}}>Tezos IOU Certificate {props.id}</p>
+                  </div>
+                  <div style={{display:'flex', justifyContent:'center'}}>
                       <div style={{borderRadius:'50%', height:50, width:50, backgroundColor:rgb }}></div>
                   </div>
                   <div>
@@ -48,10 +54,10 @@ const Certificate = (props) =>{
                   </div>
                   <div style={{display:'flex', justifyContent:'center', flexDirection:'column'}}>
                       <div style={{display:'flex', justifyContent:'center'}}>
-                          <Button style={{width:150, backgroundColor:'lightblue', borderColor:'lightblue'}}>Send</Button>
+                          <Button onClick={() => props.showSend()} style={{width:150, backgroundColor:'lightblue', borderColor:'lightblue'}}>Send</Button>
                       </div>
                       <div style={{display:'flex', justifyContent:'center', marginTop:20}}>
-                          <Button style={{width:150}}>Unlock Early</Button>
+                          <Button onClick={() => props.showUnlock()} style={{width:150}} >Unlock Early</Button>
                       </div>
                   </div>
 
@@ -66,8 +72,8 @@ class Certificates extends Component {
     constructor(props) {
         super(props)
         this.state = { account: '',
-            buyModalShow: false,
-            betModalShow:false,
+            sendModalShow: false,
+            unlockModalShow:false,
             web3:null,
             accounts: null,
         }
@@ -89,8 +95,8 @@ class Certificates extends Component {
     }
 
     hideModals(){
-        //this.setState({buyModalShow: false,betModalShow:false })
-        //this.forceUpdate();
+        this.setState({unlockModalShow: false,sendModalShow:false })
+        this.forceUpdate();
     }
 
 
@@ -98,10 +104,9 @@ class Certificates extends Component {
         return (
             <div>
                 <Row>
-                    <Col style={{ background: 'whitesmoke',textAlign: 'center'}}>
-                            Certificates
+                    <Col style={{ textAlign: 'center',}}>
+                            <p style={{color:'slate', fontSize:16, fontWeight:'bold',marginTop:20}}> My Certificates</p>
                     </Col>
-
                 </Row>
                 <Row>
                     <Col></Col>
@@ -109,17 +114,33 @@ class Certificates extends Component {
                                     justifyContent:'center',
                                     alignItems:'center',
                                     flexDirection:'column',
+                                    marginTop:-15
                                     }}>
                         {
                             mock_data.map((row) =>
                                 <div style={{marginTop:20}}>
-                                    <Certificate amount={row.amount} date={row.date} id={row.id} />
+                                    <Certificate amount={row.amount}
+                                                 date={row.date}
+                                                 id={row.id}
+                                                 showSend={() => this.setState({sendModalShow:true})}
+                                                 showUnlock={() => this.setState({unlockModalShow:true})}
+                                    />
                                 </div>
                             )
                         }
                     </Col>
                     <Col></Col>
                 </Row>
+                <SendModal
+                    show={this.state.sendModalShow}
+                    onHide={() => this.hideModals()}
+
+                />
+                <UnlockEarlyModal
+                    show={this.state.unlockModalShow}
+                    onHide={() => this.hideModals()}
+
+                />
             </div>
         )
     }

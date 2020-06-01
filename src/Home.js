@@ -10,14 +10,15 @@ import {Button,
         Dropdown,
         DropdownButton } from 'react-bootstrap';
 
+import PreviewModal from "./PreviewModal";
+
 
 
 class Home extends Component {
     constructor(props) {
         super(props)
         this.state = { account: '',
-            buyModalShow: false,
-            betModalShow:false,
+            previewModalShow: false,
             web3:null,
             accounts: null,
             deposit:0,
@@ -44,8 +45,8 @@ class Home extends Component {
     }
 
     hideModals(){
-        //this.setState({buyModalShow: false,betModalShow:false })
-        //this.forceUpdate();
+        this.setState({previewModalShow: false, })
+        this.forceUpdate();
     }
 
     updateForm(a,b){
@@ -143,7 +144,7 @@ class Home extends Component {
                             </Card>
                         </div>
                         <div style={{display:'flex', justifyContent:'center', marginTop:35}}>
-                            <Button size="lg"> Get Stake Now </Button>
+                            <Button size="lg" onClick={() => this.setState({previewModalShow: true}) }> Get Stake Now </Button>
                         </div>
                             </Card.Body>
                         </Card>
@@ -151,6 +152,11 @@ class Home extends Component {
 
                     <Col ></Col>
                 </Row>
+
+                <PreviewModal
+                    show={this.state.previewModalShow}
+                    onHide={() => this.hideModals()}
+                />
             </div>
         )
     }
