@@ -3,12 +3,10 @@ import {Button,
         Row,
         Col,
         InputGroup,
-        Modal,
         Card,
         FormControl,
         Form,
-        Dropdown,
-        DropdownButton } from 'react-bootstrap';
+} from 'react-bootstrap';
 
 import PreviewModal from "./PreviewModal";
 
@@ -24,7 +22,8 @@ class Home extends Component {
             deposit:0,
             duration:0,
             currency:'XTZ',
-            returnRate: 0
+            currencyConversion: 1,
+            returnRate: 0.01
 
         }
     }
@@ -49,12 +48,6 @@ class Home extends Component {
         this.forceUpdate();
     }
 
-    updateForm(a,b){
-        console.log(a);
-        console.log(b);
-
-        this.setState({[`${a}`]:b})
-    }
 
     setReturnRate(e){
         if(e==='3 Months'){
@@ -84,6 +77,22 @@ class Home extends Component {
 
     }
 
+    chooseCurrency(e){
+        let conversion;
+
+        if(e === 'USDtz'){
+            conversion = 0.34;
+        }
+        else if (e === 'tzBTC'){
+            conversion = 0.00030026;
+        }
+        else{
+            conversion = 1;
+        }
+
+        this.setState({currency:e, currencyConversion:conversion});
+    }
+
 
     render() {
         return (
@@ -100,7 +109,7 @@ class Home extends Component {
                                                 placeholder="0"
                                                 aria-label="Deposit"
                                                 aria-describedby="basic-addon1"
-                                                onChange={(e)=> this.updateForm(e.target.id, e.target.value)}
+                                                onChange={(e)=> this.setState({deposit: e.target.value})}
                                             />
                                             <InputGroup.Append>
                                                 <InputGroup.Text id="basic-addon2">XTZ</InputGroup.Text>
@@ -126,7 +135,7 @@ class Home extends Component {
                                     <Form.Group  controlId="currency" style={{marginTop:15}}>
                                         <Form.Label style={{fontWeight:'bold', fontSize:16, color:'slate'}}>  Return Currency</Form.Label>
                                         <Form.Control as="select"
-                                                      onChange={(e)=> this.updateForm(e.target.id, e.target.value)}>
+                                                      onChange={(e)=> this.chooseCurrency(e.target.value)}>
                                             <option>XTZ</option>
                                             <option>USDtz</option>
                                             <option>tzBTC</option>
@@ -143,8 +152,8 @@ class Home extends Component {
                                                 Return
                                             </p>
                                             <ul style={{fontSize:16, color:'slate', marginTop:-5}}>
-                                                <li> {this.state.deposit*this.state.returnRate} {this.state.currency} Stake </li>
-                                                <li> Certificate redeemable for 100 XTX on the date 9/11/22</li>
+                                                <li> { this.state.deposit*this.state.returnRate*this.state.currencyConversion } {this.state.currency} Stake </li>
+                                                <li> Certificate redeemable for {this.state.deposit} XTX on the date 9/11/22</li>
                                             </ul>
 
                                         </Card.Body>
