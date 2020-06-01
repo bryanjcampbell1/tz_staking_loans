@@ -47,24 +47,24 @@ class PreviewModal extends Component {
                                             <Card.Body>
                                                 <p style={{fontWeight:'bold', fontSize:14, color:'slate'}}>Deposit</p>
                                                 <ul style={{fontSize:14, color:'slate', marginTop:-5}}>
-                                                    <li>  100 XTX </li>
+                                                    <li>  {this.props.deposit} XTZ </li>
                                                 </ul>
                                                 <hr/>
                                                 <p style={{fontWeight:'bold', fontSize:14, color:'slate'}}>Return</p>
                                                 <ul style={{fontSize:14, color:'slate', marginTop:-5}}>
-                                                    <li> 23 XTX Stake </li>
-                                                    <li> Certificate redeemable for 100 XTX on the date 9/11/22</li>
+                                                    <li> {this.props.stake} {this.props.currency} Stake </li>
+                                                    <li> Certificate redeemable for {this.props.deposit} XTZ on the date {this.props.date}</li>
                                                 </ul>
                                                <hr/>
                                                 <p style={{fontSize:14, color:'slate', fontWeight:'bold'}}>Price</p>
                                                 <div style={{display:'flex', justifyContent:'center', marginTop:-15}}>
-                                                    <p style={{fontSize:14, color:'slate', }}>100 XTZ</p>
+                                                    <p style={{fontSize:14, color:'slate', }}>{this.props.deposit} XTZ</p>
                                                     <p style={{fontSize:12, color:'grey', fontStyle:'italic', marginLeft:4 , marginTop:2}}> + 1.00 XTZ (fee) </p>
                                                 </div>
                                                 <hr/>
                                                 <p style={{fontSize:14, color:'slate', fontWeight:'bold'}}>Total</p>
                                                 <div style={{display:'flex', justifyContent:'center', marginTop:-15}}>
-                                                    <p style={{fontSize:14, color:'slate', }}>{100 + 1.00}  XTZ</p>
+                                                    <p style={{fontSize:14, color:'slate', }}>{Number(this.props.deposit) + 1.00}  XTZ</p>
                                                 </div>
                                             </Card.Body>
                                         </Card>
@@ -89,8 +89,8 @@ class PreviewModal extends Component {
                                                 <Card.Body>
                                                     <p style={{fontWeight:'bold', fontSize:14, color:'slate'}}>Received</p>
                                                     <ul>
-                                                        <li> <p style={{fontSize:14, color:'slate'}}> 23 XTZ Stake</p> </li>
-                                                        <li> <p style={{fontSize:14, color:'slate'}}> Certificate redeemable for 100 XTX on the date 9/11/22</p> </li>
+                                                        <li> <p style={{fontSize:14, color:'slate'}}> {this.props.stake} {this.props.currency} Stake</p> </li>
+                                                        <li> <p style={{fontSize:14, color:'slate'}}> Certificate redeemable for {this.props.deposit} XTX on the date {this.props.date}</p> </li>
                                                     </ul>
                                                 </Card.Body>
                                             </Card>

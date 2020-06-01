@@ -182,6 +182,10 @@ class Home extends Component {
                 <PreviewModal
                     show={this.state.previewModalShow}
                     onHide={() => this.hideModals()}
+                    deposit={ this.state.deposit}
+                    stake={ this.state.deposit*this.state.returnRate*this.state.currencyConversion }
+                    currency={this.state.currency}
+                    date={this.state.unlockDate}
                 />
             </div>
         )
