@@ -90,7 +90,10 @@ class Home extends Component {
                 <Row style={{marginTop:50}}>
                     <Col></Col>
 
-                    <Col xs={4} >
+                    <Col xs={6} >
+
+                        <Card>
+                            <Card.Body style={{padding:50}}>
                         <Form>
                             <Form.Group as={Row} controlId="deposit">
                                 <Form.Label>Deposit Amount</Form.Label>
@@ -142,6 +145,8 @@ class Home extends Component {
                         <div style={{display:'flex', justifyContent:'center', marginTop:35}}>
                             <Button size="lg"> Get Stake Now </Button>
                         </div>
+                            </Card.Body>
+                        </Card>
                     </Col>
 
                     <Col ></Col>

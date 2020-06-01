@@ -45,7 +45,7 @@ export default class App extends React.Component {
         <div>
 
 
-          <Navbar>
+          <Navbar style={{backgroundColor:'lightblue'}}>
             <Navbar.Brand href="/">Staking Loans</Navbar.Brand>
             <Nav>
               <Nav.Link href="/Certificates">Certificates</Nav.Link>
@@ -69,6 +69,8 @@ export default class App extends React.Component {
               <Route path="/Certificates" component={Certificates}/>
             </Switch>
           </Router>
+
+          <div style={ {backgroundColor:'lightblue', marginTop:50, height:150}}></div>
         </div>
     );
   }
