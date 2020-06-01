@@ -9,6 +9,7 @@ import {Button,
 } from 'react-bootstrap';
 
 import PreviewModal from "./PreviewModal";
+import moment from 'moment'
 
 
 
@@ -23,7 +24,8 @@ class Home extends Component {
             duration:0,
             currency:'XTZ',
             currencyConversion: 1,
-            returnRate: 0.01
+            returnRate: 0.01,
+            unlockDate: moment(Date.now()).add(3, 'months').calendar()
 
         }
     }
@@ -50,29 +52,34 @@ class Home extends Component {
 
 
     setReturnRate(e){
+        var startDate = Date.now();
+        var endDateMoment = moment(startDate);
+
+
         if(e==='3 Months'){
-            this.setState({returnRate: 0.01})
+
+            this.setState({returnRate: 0.01, unlockDate:endDateMoment.add(3, 'months').calendar() })
         }
         else if(e==='6 Months'){
-            this.setState({returnRate: 0.021})
+            this.setState({returnRate: 0.021, unlockDate:endDateMoment.add(6, 'months').calendar()})
         }
         else if(e==='9 Months'){
-            this.setState({returnRate: 0.033})
+            this.setState({returnRate: 0.033, unlockDate:endDateMoment.add(9, 'months').calendar()})
         }
         else if(e==='1 Year'){
-            this.setState({returnRate: 0.0406})
+            this.setState({returnRate: 0.0406, unlockDate:endDateMoment.add(12, 'months').calendar()})
         }
         else if(e==='15 Months'){
-            this.setState({returnRate: 0.0510})
+            this.setState({returnRate: 0.0510, unlockDate:endDateMoment.add(15, 'months').calendar()})
         }
         else if(e==='18 Months'){
-            this.setState({returnRate: 0.0615})
+            this.setState({returnRate: 0.0615, unlockDate:endDateMoment.add(18, 'months').calendar()})
         }
         else if(e==='21 Months'){
-            this.setState({returnRate: 0.0721})
+            this.setState({returnRate: 0.0721, unlockDate:endDateMoment.add(21, 'months').calendar()})
         }
         else{
-            this.setState({returnRate: 0.0829})
+            this.setState({returnRate: 0.0829, unlockDate:endDateMoment.add(24, 'months').calendar()})
         }
 
     }
@@ -145,7 +152,7 @@ class Home extends Component {
                                 </Form>
                                 <div style={{display:'flex', justifyContent:'center', marginTop:30}}>
 
-                                    <Card style={{backgroundColor:'whitesmoke'}}>
+                                    <Card style={{backgroundColor:'whitesmoke', width:'100%'}}>
                                         <Card.Body>
 
                                             <p style={{fontWeight:'bold', fontSize:16, color:'slate'}}>
@@ -153,7 +160,13 @@ class Home extends Component {
                                             </p>
                                             <ul style={{fontSize:16, color:'slate', marginTop:-5}}>
                                                 <li> { this.state.deposit*this.state.returnRate*this.state.currencyConversion } {this.state.currency} Stake </li>
-                                                <li> Certificate redeemable for {this.state.deposit} XTX on the date 9/11/22</li>
+                                                {
+                                                    (this.state.unlockDate !== null)?
+                                                        <li> Certificate redeemable for {this.state.deposit} XTX on {this.state.unlockDate}</li>
+                                                        :
+                                                        <div></div>
+                                                }
+
                                             </ul>
 
                                         </Card.Body>
