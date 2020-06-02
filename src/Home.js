@@ -104,7 +104,10 @@ class Home extends Component {
     render() {
         return (
             <div>
-                <Row style={{marginTop:50}}>
+                <div style={{display:'flex', justifyContent:'center'}}>
+                    <p style={{fontWeight:'bold', fontSize:44, color:'DodgerBlue', }}>Seize Your Stake</p>
+                </div>
+                <Row style={{marginTop:0}}>
                     <Col style={{display:'flex', justifyContent:'center'}}>
                         <Card style={{width:500}}>
                             <Card.Body style={{padding:40}}>

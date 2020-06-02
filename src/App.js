@@ -10,7 +10,8 @@ import {
 } from "react-router-dom";
 
 
-import Home from './Home'
+
+import Landing from "./Landing";
 import Certificates from './Certificates'
 
 export default class App extends React.Component {
@@ -46,26 +47,15 @@ export default class App extends React.Component {
 
 
           <Navbar style={{backgroundColor:'lightblue'}}>
-            <Navbar.Brand href="/" style={{marginLeft:5}}>Staking Loans</Navbar.Brand>
+            <Navbar.Brand href="/" style={{marginLeft:5, fontWeight:'bold',}}>AccessStaking</Navbar.Brand>
             <Nav>
-              <Nav.Link href="/Certificates">Certificates</Nav.Link>
+              <Nav.Link href="/Certificates" style={{ fontWeight:'bold',}}>Certificates</Nav.Link>
             </Nav>
           </Navbar>
-          <div className="topRightCorner">
-            {
-              (this.state.web3 === null)?
-                  <div></div>
-                  :
-                  <p style={{color:"midnightblue", fontSize:16}}>{this.state.accounts[0]}</p>
-
-            }
-          </div>
-
-
 
           <Router>
             <Switch>
-              <Route exact path="/" component={Home}/>
+              <Route exact path="/" component={Landing}/>
               <Route path="/Certificates" component={Certificates}/>
             </Switch>
           </Router>
