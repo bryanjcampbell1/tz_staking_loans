@@ -4,24 +4,26 @@ import SendModal from "./SendModal";
 import UnlockEarlyModal from "./UnlockEarlyModal";
 import UnlockModal from "./UnlockModal";
 
+import moment from 'moment'
+
 let c1 = {
     id: 320,
     amount: 100,
     stakePaid:12,
-    date: "8/3/22"
+    date: 2519211811670
 }
 
 let c2 = {
     id: 13,
     amount: 80,
     stakePaid:8,
-    date: "9/3/22"
+    date: 1520211811670
 }
 let c3 = {
     id: 1007,
     amount: 1000,
     stakePaid:26,
-    date: "10/13/22"
+    date: 1619211811670
 }
 
 let mock_data = [c1,c2,c3];
@@ -107,9 +109,6 @@ class Certificates extends Component {
         }
     }
 
-    clicked(e){
-        console.log("yo", e);
-    }
     hideModals(){
         this.setState({unlockEarlyModalShow:false, unlockModalShow: false,sendModalShow:false })
         this.forceUpdate();
@@ -136,12 +135,12 @@ class Certificates extends Component {
                             this.state.certsArray.map((row, key) =>
                                 <div style={{marginTop:20}}>
                                     <Certificate amount={row.amount}
-                                                 date={row.date}
+                                                 date={moment(row.date).calendar()}
                                                  id={row.id}
                                                  showSend={() => this.setState({sendModalShow:true, index:key})}
                                                  showUnlock={() => this.setState({unlockModalShow:true, index:key})}
                                                  showUnlockEarly={() => this.setState({unlockEarlyModalShow:true, index:key})}
-                                                 unlocked={true}
+                                                 unlocked={Date.now() > row.date}
                                     />
                                 </div>
                             )
@@ -153,20 +152,20 @@ class Certificates extends Component {
                     show={this.state.sendModalShow}
                     onHide={() => this.hideModals()}
                     amount={this.state.certsArray[this.state.index].amount}
-                    date={this.state.certsArray[this.state.index].date}
+                    date={ moment(this.state.certsArray[this.state.index].date).calendar()}
                 />
                 <UnlockEarlyModal
                     show={this.state.unlockEarlyModalShow}
                     onHide={() => this.hideModals()}
                     amount={this.state.certsArray[this.state.index].amount}
-                    date={this.state.certsArray[this.state.index].date}
+                    date={moment(this.state.certsArray[this.state.index].date).calendar()}
                     stake={this.state.certsArray[this.state.index].stakePaid}
                 />
                 <UnlockModal
                     show={this.state.unlockModalShow}
                     onHide={() => this.hideModals()}
                     amount={this.state.certsArray[this.state.index].amount}
-                    date={this.state.certsArray[this.state.index].date}
+                    date={moment(this.state.certsArray[this.state.index].date).calendar()}
                     stake={this.state.certsArray[this.state.index].stakePaid}
                 />
             </div>
