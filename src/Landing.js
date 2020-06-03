@@ -62,19 +62,22 @@ export default function Landing() {
                   <Image src={Safe} style={{width:'60%',}} />
                 </Col>
               </Row>
-              <div className="container">
-                <h1>Please sign up or login</h1>
-                <input
-                    type="email"
-                    name="email"
-                    required="required"
-                    placeholder="Enter your email"
-                    onChange={event => {
-                      setEmail(event.target.value);
-                    }}
-                />
-                <button onClick={login}>Send</button>
-              </div>
+              <Row>
+                <Col>
+                  <div style={{display:'flex', justifyContent:'flex-start', flexDirection:'row', marginLeft:20}}>
+                    <input
+                        type="email"
+                        name="email"
+                        required="required"
+                        placeholder="Enter your email"
+                        onChange={event => {
+                          setEmail(event.target.value);
+                        }}
+                    />
+                    <Button onClick={login} style={{marginLeft:10}}>Sign Up / Log In</Button>
+                  </div>
+                  </Col>
+              </Row>
               </div>
         ) : (
             <div>
