@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {Button, Image,Card, Row, Col} from 'react-bootstrap';
 import "./App.css";
 import Safe from './TezosSafe.png';
+import contractData from "./mock_contract";
 
 import { Magic } from "magic-sdk";
 import { TezosExtension } from "@magic-ext/tezos";
@@ -100,6 +101,3 @@ export default function Landing() {
       </div>
   );
 }
-
-//Treat this like a line of credit to yourself or choose not to pay it back and take the equity now.
-//Either way, there is no liquidation, and you always get your locked Tezos back.
