@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {Button, Card} from 'react-bootstrap';
+import {Button, Image,Card, Row, Col} from 'react-bootstrap';
 import "./App.css";
+import Safe from './TezosSafe.png';
 
 import { Magic } from "magic-sdk";
 import { TezosExtension } from "@magic-ext/tezos";
@@ -44,19 +45,37 @@ export default function Landing() {
   return (
       <div className="App">
         {!isLoggedIn ? (
-            <div className="container">
-              <h1>Please sign up or login</h1>
-              <input
-                  type="email"
-                  name="email"
-                  required="required"
-                  placeholder="Enter your email"
-                  onChange={event => {
-                    setEmail(event.target.value);
-                  }}
-              />
-              <button onClick={login}>Send</button>
-            </div>
+            <div>
+              <Row style={ {marginTop:20}}>
+                <Col style={{display:'flex', alignItems:'center', flexDirection:'column' }} xs={6}>
+                  <div style={{display:'flex', justifyContent:'flex-start', marginLeft:20}}>
+                    <p style={{fontWeight:'bold', fontSize:45, color:'dodgerblue'}}>Get your future stake now </p>
+                  </div>
+                  <div style={{display:'flex', justifyContent:'flex-start', marginLeft:20}}>
+                    <p style={{fontWeight:'bold', fontSize:20, color:'grey'}}>
+                      Lock your Tezos and get 4% compound intrest UP FRONT.
+                      There is no liquidation, and you always get your locked funds back.
+                    </p>
+                  </div>
+                </Col>
+                <Col style={{display:'flex', justifyContent:'center',}}>
+                  <Image src={Safe} style={{width:'60%',}} />
+                </Col>
+              </Row>
+              <div className="container">
+                <h1>Please sign up or login</h1>
+                <input
+                    type="email"
+                    name="email"
+                    required="required"
+                    placeholder="Enter your email"
+                    onChange={event => {
+                      setEmail(event.target.value);
+                    }}
+                />
+                <button onClick={login}>Send</button>
+              </div>
+              </div>
         ) : (
             <div>
               <div className="topRightCorner">
@@ -78,3 +97,6 @@ export default function Landing() {
       </div>
   );
 }
+
+//Treat this like a line of credit to yourself or choose not to pay it back and take the equity now.
+//Either way, there is no liquidation, and you always get your locked Tezos back.

@@ -45,7 +45,6 @@ export default class App extends React.Component {
     return (
         <div>
 
-
           <Navbar style={{backgroundColor:'lightblue'}}>
             <Navbar.Brand href="/" style={{marginLeft:5, fontWeight:'bold',}}>AccessStaking</Navbar.Brand>
             <Nav>
