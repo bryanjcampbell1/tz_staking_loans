@@ -40,7 +40,7 @@ const Certificate = (props) =>{
 
     return(
       <div>
-          <Card style={{padding:20, width:300}}>
+          <Card style={{padding:20, width:300, boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}>
               <Card.Body>
                   <div style={{display:'flex', justifyContent:'center'}}>
                       <p style={{color:'slate', fontSize:14, fontWeight:'bold',marginTop:-20}}>Tezos IOU Certificate {props.id}</p>

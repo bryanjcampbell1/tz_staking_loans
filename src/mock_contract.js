@@ -1,6 +1,6 @@
 let storage = { "prim": "Pair", "args": [ { "int": "12" }, { "int": "123" } ] };
 
-let code = {[
+let code = [
         { "prim": "storage", "args": [ { "prim": "pair", "args": [ { "prim": "int", "annots": [ "%myParameter1" ] }, { "prim": "int", "annots": [ "%myParameter2" ] } ] } ] },
 { "prim": "parameter", "args": [ { "prim": "or", "args": [ { "prim": "int", "annots": [ "%myEntryPoint1" ] }, { "prim": "int", "annots": [ "%myEntryPoint2" ] } ] } ] },
 {
@@ -87,7 +87,7 @@ let code = {[
     ]
 ]
 }
-]};
+];
 
 let address = "KT1EnYHapL9ehyEuJXgFCXLUTR5CA9RJpJrm"
 

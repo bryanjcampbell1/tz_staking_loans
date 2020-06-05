@@ -109,7 +109,7 @@ class Home extends Component {
                 </div>
                 <Row style={{marginTop:0}}>
                     <Col style={{display:'flex', justifyContent:'center'}}>
-                        <Card style={{width:500}}>
+                        <Card style={{width:500, boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}>
                             <Card.Body style={{padding:40}}>
                                 <Form style={{marginTop:-15}}>
                                     <Form.Group controlId="deposit">
