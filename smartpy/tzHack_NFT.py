@@ -578,6 +578,63 @@ class FA2(sp.Contract):
                 operator = params.operator,
                 is_operator = False)
             sp.transfer(returned, sp.mutez(0), params.callback)
+    
+    
+    @sp.entry_point
+    def create_certificate(self, params):
+        
+        # 1) get tez value
+        mintAmount = sp.split_tokens(sp.amount, 100, 100)
+        coins = sp.ediv(mintAmount, sp.mutez(1) )
+        amount = sp.to_int( sp.fst(coins.open_some()) )
+        
+        
+        # 2) get timestamp
+        start_time = sp.now
+        end_time = sp.now + params.months*number_of_seconds_per_month
+        
+        # 3) calculate payout 
+        amount_with_intrest= amount*(1 + (0.04/12) )^params.months
+        stake = amount_with_intrest - amount
+        
+        
+        # 3) get highest token_index
+        token_id = sp.len(self.data.tokens)
+        
+        
+        
+        # 4) mint certificate
+        if self.config.single_asset:
+            sp.verify(params.token_id == 0, "single-asset: token-id <> 0")
+        if self.config.non_fungible:
+            sp.verify(params.amount == 1, "NFT-asset: amount <> 1")
+            sp.verify(~ self.token_id_set.contains(self.data.all_tokens,
+                                                   token_id),
+                      "NFT-asset: cannot mint twice same token")
+        user = self.ledger_key.make(params.address, token_id)
+        self.token_id_set.add(self.data.all_tokens, token_id)
+        
+        sp.if self.data.ledger.contains(user):
+            self.data.ledger[user].balance += 1
+        sp.else:
+            self.data.ledger[user] = Ledger_value.make(1)
+        sp.if self.data.tokens.contains(token_id):
+             self.data.tokens[token_id].total_supply += 1
+        sp.else:
+             self.data.tokens[params.token_id] = sp.record(
+                 total_supply = params.amount,
+                 metadata = sp.record(
+                     token_id = token_id,
+                     symbol = "IOU",
+                     name = "", # Consered useless here
+                     decimals = 0,
+                     extras = sp.map({"value":amount, "earlyUnlockFee":stake, "unlockTime": end_time } )
+                 )
+             )
+        
+        
+        
+        
 
 ## ## Tests
 ##
