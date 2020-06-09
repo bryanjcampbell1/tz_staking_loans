@@ -105,7 +105,8 @@ class Home extends Component {
         return (
             <div>
                 <div style={{display:'flex', justifyContent:'center'}}>
-                    <p style={{fontWeight:'bold', fontSize:44, color:'DodgerBlue', }}>Seize Your Stake</p>
+                    <p style={{fontWeight:'bold', fontSize:44, color:'DodgerBlue',
+                        textShadow: "2px 4px 3px rgba(0,0,0,0.3)" }}>Seize Your Stake</p>
                 </div>
                 <Row style={{marginTop:0}}>
                     <Col style={{display:'flex', justifyContent:'center'}}>
@@ -169,7 +170,6 @@ class Home extends Component {
                                                         :
                                                         <div></div>
                                                 }
-
                                             </ul>
 
                                         </Card.Body>

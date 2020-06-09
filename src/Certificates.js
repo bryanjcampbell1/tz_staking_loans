@@ -120,7 +120,8 @@ class Certificates extends Component {
             <div>
                 <Row>
                     <Col style={{ textAlign: 'center',}}>
-                            <p style={{color:'slate', fontSize:16, fontWeight:'bold',marginTop:20}}> My Certificates</p>
+                            <p style={{color:'slate', fontSize:16, fontWeight:'bold',marginTop:20,
+                                textShadow: "2px 4px 3px rgba(0,0,0,0.3)"}}> My Certificates</p>
                     </Col>
                 </Row>
                 <Row>
