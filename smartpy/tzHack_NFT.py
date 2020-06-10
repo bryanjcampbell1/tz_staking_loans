@@ -583,6 +583,9 @@ class FA2(sp.Contract):
     @sp.entry_point
     def create_certificate(self, params):
         
+        # 0) verify that lock period is not more than 2 years
+        sp.verify(params.months < 25) 
+        
         # 1) get tez value
         mintAmount = sp.split_tokens(sp.amount, 100, 100)
         coins = sp.ediv(mintAmount, sp.mutez(1) )
@@ -590,11 +593,16 @@ class FA2(sp.Contract):
         
         
         # 2) get timestamp
-        start_time = sp.now
-        end_time = sp.now + params.months*number_of_seconds_per_month
+        end_time = sp.now.add_days(params.months*30) 
         
         # 3) calculate payout 
-        amount_with_intrest= amount*(1 + (0.04/12) )^params.months
+
+        awi= sp.ediv(1204,1200)
+        amount_with_intrest = 0
+        
+        sp.if ( awi.is_some() ):
+            amount_with_intrest = amount*sp.to_int( sp.fst(awi.open_some()) )^params.months 
+            
         stake = amount_with_intrest - amount
         
         
