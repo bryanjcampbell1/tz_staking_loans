@@ -602,7 +602,19 @@ class FA2(sp.Contract):
         
         sp.if ( awi.is_some() ):
             #amount_with_intrest = amount*sp.to_int( sp.fst(awi.open_some()) )^params.months 
-            amount_with_intrest = amount*sp.to_int( sp.fst(awi.open_some()) )
+            
+            
+            
+            one_month_intrest = sp.to_int(sp.fst(awi.open_some()))
+            total_intrest = 1
+            
+            y = 0
+            
+            sp.while y < params.months:
+                y += 1
+                total_intrest *= one_month_intrest
+                
+            amount_with_intrest = amount*total_intrest
            
         
             
@@ -615,13 +627,10 @@ class FA2(sp.Contract):
         
         
         # 4) mint certificate
-        if self.config.single_asset:
-            sp.verify(params.token_id == 0, "single-asset: token-id <> 0")
-        if self.config.non_fungible:
-            sp.verify(params.amount == 1, "NFT-asset: amount <> 1")
-            sp.verify(~ self.token_id_set.contains(self.data.all_tokens,
-                                                   token_id),
-                      "NFT-asset: cannot mint twice same token")
+        sp.verify(~ self.token_id_set.contains(self.data.all_tokens,
+                                               token_id),
+                  "NFT-asset: cannot mint twice same token")
+                  
         user = self.ledger_key.make(params.address, token_id)
         self.token_id_set.add(self.data.all_tokens, token_id)
         
@@ -632,7 +641,7 @@ class FA2(sp.Contract):
         sp.if self.data.tokens.contains(token_id):
              self.data.tokens[token_id].total_supply += 1
         sp.else:
-             self.data.tokens[params.token_id] = sp.record(
+             self.data.tokens[token_id] = sp.record(
                  total_supply = params.amount,
                  metadata = sp.record(
                      token_id = token_id,
@@ -648,16 +657,21 @@ class FA2(sp.Contract):
     def redeem_certificate(self, params):
         
         # 0)  use params.token_id to look up certificate
-        
+        certificate = self.data.tokens[params.token_id] 
         
         
         # 1)  verify you are owner of certificate
+        user = self.ledger_key.make(params.address, params.token_id)
         
+        sp.if self.data.ledger.contains(user):
+            sp.verify( self.data.ledger[user].balance == 1 )
         
         
         # 2)  Determine payout 
         #if( sp.now > unlockTime) 
         #       sp.verify(params.amount == stake) 
+        unlockTime = certificate.metadata.extras["unlockTime"]
+        unlockTimestamp = sp.timestamp(unlockTime)
         
         
         # 3) payout 
