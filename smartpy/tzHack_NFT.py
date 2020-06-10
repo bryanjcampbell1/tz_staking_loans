@@ -662,22 +662,44 @@ class FA2(sp.Contract):
         
         # 1)  verify you are owner of certificate
         user = self.ledger_key.make(params.address, params.token_id)
-        
-        sp.if self.data.ledger.contains(user):
-            sp.verify( self.data.ledger[user].balance == 1 )
+        sp.verify( self.data.ledger.contains(user) )
         
         
         # 2)  Determine payout 
-        #if( sp.now > unlockTime) 
-        #       sp.verify(params.amount == stake) 
-        unlockTime = certificate.metadata.extras["unlockTime"]
+        
+        #~~~~~~~~~~~~~~~~problem accessing int value in metadata
+        
+        
+        
+        #unlockTime = certificate.metadata.extras["unlockTime"]
+        unlockTime = 600
         unlockTimestamp = sp.timestamp(unlockTime)
         
+        payout = certificate.metadata.extras["value"]
+        early_unlock_fee = certificate.metadata.extras["earlyUnlockFee"]
         
-        # 3) payout 
+        
+        x = sp.now - unlockTimestamp
+        
+        sp.if x < 0:
+            payout = payout - early_unlock_fee
+            
+            
+            
+        # 3) Burn Certificate
+        user = self.ledger_key.make(params.address, params.token_id)
+        self.data.ledger[user].balance = 0
+        self.data.tokens[params.token_id].total_supply = 0
         
         
+        # 4) Payout 
+        sp.send( sp.sender, sp.mutez( sp.as_nat(payout) ))
         
+    
+    @sp.entry_point
+    def setBaker(self, baker):
+        sp.verify(sp.sender == self.data.administrator)
+        sp.set_delegate(baker)
         
         
      
