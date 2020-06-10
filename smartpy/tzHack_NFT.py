@@ -595,6 +595,7 @@ class FA2(sp.Contract):
         # 2) get timestamp
         end_time = sp.now.add_days(params.months*30) 
         
+        
         # 3) calculate payout 
 
         awi= sp.ediv(1204,1200)
@@ -636,11 +637,9 @@ class FA2(sp.Contract):
                      symbol = "IOU",
                      name = "", # Consered useless here
                      decimals = 0,
-                     extras = sp.map({"value":amount, "earlyUnlockFee":stake, "unlockTime": end_time } )
+                     extras = sp.map({"value":amount, "earlyUnlockFee":stake, "unlockTime":( end_time - sp.timestamp(0) ) } )
                  )
              )
-        
-        
         
         
 
