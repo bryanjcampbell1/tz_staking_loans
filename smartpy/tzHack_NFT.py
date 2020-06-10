@@ -268,7 +268,7 @@ class Token_meta_data:
             symbol = sp.TString,
             name = sp.TString,
             decimals = sp.TNat,
-            extras = sp.TMap(sp.TString, sp.TString)
+            extras = sp.TMap(sp.TString, sp.TInt)
         )
         if self.config.force_layouts:
             t = t.layout(("token_id",
@@ -452,7 +452,7 @@ class FA2(sp.Contract):
                      symbol = params.symbol,
                      name = "", # Consered useless here
                      decimals = 0,
-                     extras = sp.map({"a":params.a,"b":params.b} )
+                     extras = sp.map()
                  )
              )
 
@@ -578,8 +578,7 @@ class FA2(sp.Contract):
                 operator = params.operator,
                 is_operator = False)
             sp.transfer(returned, sp.mutez(0), params.callback)
-    
-    
+            
     @sp.entry_point
     def create_certificate(self, params):
         
@@ -602,7 +601,10 @@ class FA2(sp.Contract):
         amount_with_intrest = 0
         
         sp.if ( awi.is_some() ):
-            amount_with_intrest = amount*sp.to_int( sp.fst(awi.open_some()) )^params.months 
+            #amount_with_intrest = amount*sp.to_int( sp.fst(awi.open_some()) )^params.months 
+            amount_with_intrest = amount*sp.to_int( sp.fst(awi.open_some()) )
+           
+        
             
         stake = amount_with_intrest - amount
         
@@ -638,10 +640,34 @@ class FA2(sp.Contract):
                      name = "", # Consered useless here
                      decimals = 0,
                      extras = sp.map({"value":amount, "earlyUnlockFee":stake, "unlockTime":( end_time - sp.timestamp(0) ) } )
+                     
                  )
              )
+             
+    @sp.entry_point
+    def redeem_certificate(self, params):
+        
+        # 0)  use params.token_id to look up certificate
         
         
+        
+        # 1)  verify you are owner of certificate
+        
+        
+        
+        # 2)  Determine payout 
+        #if( sp.now > unlockTime) 
+        #       sp.verify(params.amount == stake) 
+        
+        
+        # 3) payout 
+        
+        
+        
+        
+        
+     
+             
 
 ## ## Tests
 ##
@@ -694,15 +720,6 @@ class View_consumer(sp.Contract):
         sp.else:
             self.data.operator_support = False
 
-
-
-
-
-
-
-
-
-
 ## ### Generation of Test Scenarios
 ##
 ## Tests are also parametrized by the `FA2_config` object.
@@ -731,9 +748,7 @@ def add_test(config, is_default = True):
         scenario += c1.mint(address = alice.address,
                             amount = 100,
                             symbol = 'TK0',
-                            token_id = 0,
-                            a ="yo",
-                            b = "mamma").run(sender = admin)
+                            token_id = 0).run(sender = admin)
         scenario.h2("Transfers Alice -> Bob")
         scenario += c1.transfer(
             [
@@ -772,15 +787,11 @@ def add_test(config, is_default = True):
         scenario += c1.mint(address = bob.address,
                             amount = 100,
                             symbol = 'TK1',
-                            token_id = 1,
-                            a="so",
-                            b="fat").run(sender = admin)
+                            token_id = 1).run(sender = admin)
         scenario += c1.mint(address = bob.address,
                             amount = 200,
                             symbol = 'TK2',
-                            token_id = 2,
-                            a="so",
-                            b="fat").run(sender = admin)
+                            token_id = 2).run(sender = admin)
         scenario.h3("Multi-token Transfer Bob -> Alice")
         scenario += c1.transfer(
             [
