@@ -665,23 +665,15 @@ class FA2(sp.Contract):
         sp.verify( self.data.ledger.contains(user) )
         
         
-        # 2)  Determine payout 
-        
-        #~~~~~~~~~~~~~~~~problem accessing int value in metadata
-        
-        
-        
-        #unlockTime = certificate.metadata.extras["unlockTime"]
-        unlockTime = 600
-        unlockTimestamp = sp.timestamp(unlockTime)
-        
+        # 2)  Determine payout based on time
+
+        unlockTime = certificate.metadata.extras["unlockTime"]
         payout = certificate.metadata.extras["value"]
         early_unlock_fee = certificate.metadata.extras["earlyUnlockFee"]
         
+        x = sp.now.add_seconds(- unlockTime )
         
-        x = sp.now - unlockTimestamp
-        
-        sp.if x < 0:
+        sp.if (x - sp.timestamp(0) )  < 0:
             payout = payout - early_unlock_fee
             
             
