@@ -384,6 +384,7 @@ def mutez_transfer(contract, params):
 ##   as `"version_20200602_tzip_b916f32"`: the version of FA2-smartpy and
 ##   the git commit in the TZIP [repository](https://gitlab.com/tzip/tzip) that
 ##   the contract should obey.
+        
 class FA2(sp.Contract):
     def __init__(self, config, admin):
         self.config = config
@@ -580,6 +581,8 @@ class FA2(sp.Contract):
                 operator = params.operator,
                 is_operator = False)
             sp.transfer(returned, sp.mutez(0), params.callback)
+
+    
             
             
     @sp.entry_point
@@ -599,25 +602,29 @@ class FA2(sp.Contract):
         
         
         # 3) calculate payout 
-        scaled_up_intrest = 1
-        sp.for z in sp.range(0, params.months):
-               scaled_up_intrest *= 10033
         
-        scale_factor = 1
-        sp.for z in sp.range(0, params.months):
-               scale_factor *= 10000
+        def exp( x, y):
+            w = 1
+            sp.for z in sp.range(0, y):
+                w *= x
+            return w
 
-            
+        #scaled_up_intrest = exp( 10033, params.months)
+        #scaled_up_intrest = exp( 2, 5)
+        scaled_up_intrest = 10033*10033*10033*10033*10033
+        
+    
+        #scale_factor = exp( 10000, params.months)
+        scale_factor = 10000*10000*10000*10000*10000
+
         scaled_stake = principal*(scaled_up_intrest - scale_factor)
         
-        stake = 1
-        
-        
-        x = sp.ediv(sp.as_nat(scaled_stake), sp.as_nat(scale_factor))
+        x = sp.as_nat(scaled_stake)/sp.as_nat(scale_factor)
+        stake = sp.to_int(x)
   
             
-        sp.if ( x.is_some() ):
-            stake = sp.to_int(sp.fst(x.open_some()))
+        #sp.if ( x.is_some() ):
+         #   stake = sp.to_int(sp.fst(x.open_some()))
         
         # 3) get highest token_index
         token_id = sp.len(self.data.tokens)
@@ -649,6 +656,7 @@ class FA2(sp.Contract):
                      
                  )
              )
+    
              
     @sp.entry_point
     def redeem_certificate(self, params):
@@ -715,71 +723,10 @@ def add_test(config, is_default = True):
                             amount = 100,
                             symbol = 'TK0',
                             token_id = 0).run(sender = admin)
-        scenario.h2("Transfers Alice -> Bob")
-        scenario += c1.transfer(
-            [
-                c1.batch_transfer.item(from_ = alice.address,
-                                    txs = [
-                                        sp.record(to_ = bob.address,
-                                                  amount = 10,
-                                                  token_id = 0)
-                                    ])
-            ]).run(sender = alice)
-        scenario.verify(
-            c1.data.ledger[c1.ledger_key.make(alice.address, 0)].balance == 90)
-        scenario.verify(
-            c1.data.ledger[c1.ledger_key.make(bob.address, 0)].balance == 10)
-        scenario += c1.transfer(
-            [
-                c1.batch_transfer.item(from_ = alice.address,
-                                    txs = [
-                                        sp.record(to_ = bob.address,
-                                                  amount = 10,
-                                                  token_id = 0),
-                                        sp.record(to_ = bob.address,
-                                                  amount = 11,
-                                                  token_id = 0)
-                                    ])
-            ]).run(sender = alice)
-        scenario.verify(
-            c1.data.ledger[c1.ledger_key.make(alice.address, 0)].balance
-            == 90 - 10 - 11)
-        scenario.verify(
-            c1.data.ledger[c1.ledger_key.make(bob.address, 0)].balance
-            == 10 + 10 + 11)
-        if config.single_asset:
-            return
-        scenario.h2("More Token Types")
-        scenario += c1.mint(address = bob.address,
-                            amount = 100,
-                            symbol = 'TK1',
-                            token_id = 1).run(sender = admin)
-        scenario += c1.mint(address = bob.address,
-                            amount = 200,
-                            symbol = 'TK2',
-                            token_id = 2).run(sender = admin)
+    
                             
-        scenario.h3("Create certificate")
-        scenario += c1.create_certificate(months = 24).run(sender = bob, amount=sp.mutez(100000000)) 
-        
-        scenario.h3("Multi-token Transfer Bob -> Alice")
-        scenario += c1.transfer(
-            [
-                c1.batch_transfer.item(from_ = bob.address,
-                                    txs = [
-                                        sp.record(to_ = alice.address,
-                                                  amount = 10,
-                                                  token_id = 0),
-                                        sp.record(to_ = alice.address,
-                                                  amount = 10,
-                                                  token_id = 1)]),
-                # We voluntarily test a different sub-batch:
-                c1.batch_transfer.item(from_ = bob.address,
-                                    txs = [
-                                        sp.record(to_ = alice.address,
-                                                  amount = 10,
-                                                  token_id = 2)])
-            ]).run(sender = bob)
+        scenario.h2("Create certificate")
+        scenario += c1.create_certificate(months = 15).run(sender = bob, amount=sp.mutez(100000000)) 
         
         
         
