@@ -588,7 +588,7 @@ class FA2(sp.Contract):
         # 1) get tez value
         mintAmount = sp.split_tokens(sp.amount, 100, 100)
         coins = sp.ediv(mintAmount, sp.mutez(1) )
-        amount = sp.to_int( sp.fst(coins.open_some()) )
+        principal = sp.to_int( sp.fst(coins.open_some()) )
         
         
         # 2) get timestamp
@@ -614,16 +614,15 @@ class FA2(sp.Contract):
                 y += 1
                 total_intrest *= one_month_intrest
                 
-            amount_with_intrest = amount*total_intrest
+            amount_with_intrest = principal*total_intrest
            
         
             
-        stake = amount_with_intrest - amount
+        stake = amount_with_intrest - principal
         
         
         # 3) get highest token_index
         token_id = sp.len(self.data.tokens)
-        
         
         
         # 4) mint certificate
@@ -631,7 +630,7 @@ class FA2(sp.Contract):
                                                token_id),
                   "NFT-asset: cannot mint twice same token")
                   
-        user = self.ledger_key.make(params.address, token_id)
+        user = self.ledger_key.make(sp.sender, token_id)
         self.token_id_set.add(self.data.all_tokens, token_id)
         
         sp.if self.data.ledger.contains(user):
@@ -642,13 +641,13 @@ class FA2(sp.Contract):
              self.data.tokens[token_id].total_supply += 1
         sp.else:
              self.data.tokens[token_id] = sp.record(
-                 total_supply = params.amount,
+                 total_supply = 1,
                  metadata = sp.record(
                      token_id = token_id,
                      symbol = "IOU",
                      name = "", # Consered useless here
                      decimals = 0,
-                     extras = sp.map({"value":amount, "earlyUnlockFee":stake, "unlockTime":( end_time - sp.timestamp(0) ) } )
+                     extras = sp.map({"value":principal, "earlyUnlockFee":stake, "unlockTime":( end_time - sp.timestamp(0) ) } )
                      
                  )
              )
@@ -661,7 +660,7 @@ class FA2(sp.Contract):
         
         
         # 1)  verify you are owner of certificate
-        user = self.ledger_key.make(params.address, params.token_id)
+        user = self.ledger_key.make(sp.sender, params.token_id)
         sp.verify( self.data.ledger.contains(user) )
         
         
@@ -679,7 +678,7 @@ class FA2(sp.Contract):
             
             
         # 3) Burn Certificate
-        user = self.ledger_key.make(params.address, params.token_id)
+        user = self.ledger_key.make(sp.sender, params.token_id)
         self.data.ledger[user].balance = 0
         self.data.tokens[params.token_id].total_supply = 0
         
