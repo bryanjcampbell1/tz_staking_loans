@@ -611,11 +611,28 @@ class FA2(sp.Contract):
 
         #scaled_up_intrest = exp( 10033, params.months)
         #scaled_up_intrest = exp( 2, 5)
-        scaled_up_intrest = 10033*10033*10033*10033*10033
+        #scaled_up_intrest = 10033*10033*10033*10033*10033
+        
+        w = sp.local('w', 1)
+        y = sp.local('y', 0)
+        sp.while y.value < params.months:
+        
+            w.value = 10033*w.value 
+            y.value = y.value + 1
+           
+        scaled_up_intrest = w.value
         
     
         #scale_factor = exp( 10000, params.months)
-        scale_factor = 10000*10000*10000*10000*10000
+        #scale_factor = 10000*10000*10000*10000*10000
+        u = sp.local('u', 1)
+        v = sp.local('v', 0)
+        sp.while v.value < params.months:
+        
+            u.value = 10000*u.value 
+            v.value = v.value + 1
+           
+        scale_factor = u.value
 
         scaled_stake = principal*(scaled_up_intrest - scale_factor)
         
@@ -726,7 +743,7 @@ def add_test(config, is_default = True):
     
                             
         scenario.h2("Create certificate")
-        scenario += c1.create_certificate(months = 15).run(sender = bob, amount=sp.mutez(100000000)) 
+        scenario += c1.create_certificate(months = 5).run(sender = bob, amount=sp.mutez(100000000)) 
         
         scenario.h2("redeem  certificate")
         scenario += c1.redeem_certificate(token_id = 1).run(sender = bob) 
