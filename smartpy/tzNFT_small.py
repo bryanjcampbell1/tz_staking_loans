@@ -728,7 +728,8 @@ def add_test(config, is_default = True):
         scenario.h2("Create certificate")
         scenario += c1.create_certificate(months = 15).run(sender = bob, amount=sp.mutez(100000000)) 
         
-        
+        scenario.h2("redeem  certificate")
+        scenario += c1.redeem_certificate(token_id = 1).run(sender = bob) 
         
         
 
