@@ -599,26 +599,25 @@ class FA2(sp.Contract):
         
         
         # 3) calculate payout 
+        scaled_up_intrest = 1
+        sp.for z in sp.range(0, params.months):
+               scaled_up_intrest *= 10033
+        
+        scale_factor = 1
+        sp.for z in sp.range(0, params.months):
+               scale_factor *= 10000
 
-        awi= sp.ediv(1204,1200)
-        amount_with_intrest = 1
-
-        
-        sp.if ( awi.is_some() ):
             
-            one_month_intrest = sp.to_int(sp.fst(awi.open_some()))
-            total_intrest = 1
+        scaled_stake = principal*(scaled_up_intrest - scale_factor)
         
-            sp.for z in sp.range(0, params.months):
-               total_intrest *= one_month_intrest
-                
+        stake = 1
+        
+        
+        x = sp.ediv(sp.as_nat(scaled_stake), sp.as_nat(scale_factor))
+  
             
-            amount_with_intrest = principal*total_intrest
-           
-        
-            
-        stake = amount_with_intrest - principal
-        
+        sp.if ( x.is_some() ):
+            stake = sp.to_int(sp.fst(x.open_some()))
         
         # 3) get highest token_index
         token_id = sp.len(self.data.tokens)
@@ -761,7 +760,7 @@ def add_test(config, is_default = True):
                             token_id = 2).run(sender = admin)
                             
         scenario.h3("Create certificate")
-        scenario += c1.create_certificate(months = 14).run(sender = bob, amount=sp.mutez(50000000)) 
+        scenario += c1.create_certificate(months = 24).run(sender = bob, amount=sp.mutez(100000000)) 
         
         scenario.h3("Multi-token Transfer Bob -> Alice")
         scenario += c1.transfer(
