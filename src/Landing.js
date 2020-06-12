@@ -80,8 +80,8 @@ export default function Landing() {
       delegate: undefined,
       fee: 100000,
       derivationPath: "",
-      storage_limit: 1000,
-      gas_limit: 100000,
+      storage_limit: 20000,
+      gas_limit: 500000,
       code: contract,
       storage,
       codeFormat: "micheline"
