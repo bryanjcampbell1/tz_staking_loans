@@ -10,6 +10,44 @@ import {Button,
 
 import PreviewModal from "./PreviewModal";
 import moment from 'moment'
+import {Magic} from "magic-sdk";
+import {TezosExtension} from "@magic-ext/tezos";
+
+const magic = new Magic("pk_test_8363773537E9D19E", {
+    extensions: {
+        tezos: new TezosExtension({
+            rpcUrl: "https://tezos-dev.cryptonomic-infra.tech:443/"
+        })
+    }
+});
+
+const handleInvokeContract = async () => {
+
+    const params = {
+        contract: 'KT1NXXLzk3rwnawPc4HwDn8siPkMaBjT5Hdr',
+        amount: 0,
+        fee: 100000,
+        derivationPath: '',
+        storageLimit: 1000,
+        gasLimit: 100000,
+        entrypoint: '',
+        parameters: '{"string": "Cryptonomicon"}',
+        parameterFormat: 'micheline'
+    };
+
+    const result = await magic.tezos.sendContractInvocationOperation(
+        params.contract,
+        params.amount,
+        params.fee,
+        params.derivationPath,
+        params.storageLimit,
+        params.gasLimit,
+        params.entrypoint,
+        params.parameters,
+        params.parameterFormat
+    );
+    console.log(`Injected operation`, result);
+};
 
 
 

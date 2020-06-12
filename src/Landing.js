@@ -19,10 +19,6 @@ const magic = new Magic("pk_test_8363773537E9D19E", {
 
 
 
-
-
-
-
 export default function Landing() {
   const [email, setEmail] = useState("");
   const [publicAddress, setPublicAddress] = useState("");
@@ -110,6 +106,61 @@ export default function Landing() {
     );
   };
 
+  const handleInvokeContract = async () => {
+
+    const params = {
+      contract: contractData.address,
+      amount: 100000000,
+      fee: 100000,
+      derivationPath: '',
+      storageLimit: 20000,
+      gasLimit: 500000,
+      entrypoint: '',
+      parameters: '(Left (Left (Right (Left 5))))',
+      parameterFormat: 'michelson'
+    };
+
+    const result = await magic.tezos.sendContractInvocationOperation(
+        params.contract,
+        params.amount,
+        params.fee,
+        params.derivationPath,
+        params.storageLimit,
+        params.gasLimit,
+        params.entrypoint,
+        params.parameters,
+        params.parameterFormat
+    );
+    console.log(`Injected operation`, result);
+  };
+
+  const redeem = async () => {
+
+    const params = {
+      contract: contractData.address,
+      amount: 100000000,
+      fee: 100000,
+      derivationPath: '',
+      storageLimit: 20000,
+      gasLimit: 500000,
+      entrypoint: '',
+      parameters: '(Left (Right (Right (Right 0))))',
+      parameterFormat: 'michelson'
+    };
+
+    const result = await magic.tezos.sendContractInvocationOperation(
+        params.contract,
+        params.amount,
+        params.fee,
+        params.derivationPath,
+        params.storageLimit,
+        params.gasLimit,
+        params.entrypoint,
+        params.parameters,
+        params.parameterFormat
+    );
+    console.log(`Injected operation`, result);
+  };
 
 
   return (
@@ -261,7 +312,12 @@ export default function Landing() {
                 )}
               </div>
               */}
+              {/*
               <Button onClick={handleSendContractOrigination} style={{marginLeft:10}}>Originate Contract</Button>
+              */}
+
+              <Button onClick={redeem} style={{marginLeft:10}}>invoke Contract</Button>
+
               <Home />
             </div>
         )}
