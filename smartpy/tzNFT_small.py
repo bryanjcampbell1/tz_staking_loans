@@ -360,7 +360,7 @@ class Token_id_set:
             return (v < metaset)
         else:
             metaset.contains(v)
-        
+
 ##
 ## ## Implementation of the Contract
 ##
@@ -384,7 +384,7 @@ def mutez_transfer(contract, params):
 ##   as `"version_20200602_tzip_b916f32"`: the version of FA2-smartpy and
 ##   the git commit in the TZIP [repository](https://gitlab.com/tzip/tzip) that
 ##   the contract should obey.
-        
+
 class FA2(sp.Contract):
     def __init__(self, config, admin):
         self.config = config
@@ -404,6 +404,7 @@ class FA2(sp.Contract):
                 sp.transfer(v, sp.mutez(0), params)
             self.permissions_descriptor = sp.entry_point(permissions_descriptor)
         self.init(
+            highestTokenIndex = 0,
             paused = False,
             ledger =
                 self.config.my_map(tvalue = Ledger_value.get_type()),
@@ -458,6 +459,7 @@ class FA2(sp.Contract):
                      extras = sp.map()
                  )
              )
+        self.data.highestTokenIndex += 1
 
     @sp.entry_point
     def transfer(self, params):
@@ -582,79 +584,62 @@ class FA2(sp.Contract):
                 is_operator = False)
             sp.transfer(returned, sp.mutez(0), params.callback)
 
-    
-            
-            
+
+
+
     @sp.entry_point
     def create_certificate(self, params):
-        
+
         # 0) verify that lock period is not more than 2 years
-        sp.verify(params.months < 25) 
-        
+        sp.verify(params.months < 25)
+
         # 1) get tez value
         mintAmount = sp.split_tokens(sp.amount, 100, 100)
         coins = sp.ediv(mintAmount, sp.mutez(1) )
         principal = sp.to_int( sp.fst(coins.open_some()) )
-        
-        
-        # 2) get timestamp
-        end_time = sp.now.add_days(params.months*30) 
-        
-        
-        # 3) calculate payout 
-        
-        def exp( x, y):
-            w = 1
-            sp.for z in sp.range(0, y):
-                w *= x
-            return w
 
-        #scaled_up_intrest = exp( 10033, params.months)
-        #scaled_up_intrest = exp( 2, 5)
-        #scaled_up_intrest = 10033*10033*10033*10033*10033
-        
+
+        # 2) get timestamp
+        end_time = sp.now.add_days(params.months*30)
+
+
+        # 3) calculate payout
         w = sp.local('w', 1)
         y = sp.local('y', 0)
         sp.while y.value < params.months:
-        
-            w.value = 10033*w.value 
+
+            w.value = 10033*w.value
             y.value = y.value + 1
-           
+
         scaled_up_intrest = w.value
-        
-    
-        #scale_factor = exp( 10000, params.months)
-        #scale_factor = 10000*10000*10000*10000*10000
+
         u = sp.local('u', 1)
         v = sp.local('v', 0)
         sp.while v.value < params.months:
-        
-            u.value = 10000*u.value 
+
+            u.value = 10000*u.value
             v.value = v.value + 1
-           
+
         scale_factor = u.value
 
         scaled_stake = principal*(scaled_up_intrest - scale_factor)
-        
+
         x = sp.as_nat(scaled_stake)/sp.as_nat(scale_factor)
         stake = sp.to_int(x)
-  
-            
-        #sp.if ( x.is_some() ):
-         #   stake = sp.to_int(sp.fst(x.open_some()))
-        
+
+
         # 3) get highest token_index
-        token_id = sp.len(self.data.tokens)
-        
-        
+        token_id = self.data.highestTokenIndex
+
+
         # 4) mint certificate
         sp.verify(~ self.token_id_set.contains(self.data.all_tokens,
                                                token_id),
                   "NFT-asset: cannot mint twice same token")
-                  
+
         user = self.ledger_key.make(sp.sender, token_id)
         self.token_id_set.add(self.data.all_tokens, token_id)
-        
+
         sp.if self.data.ledger.contains(user):
             self.data.ledger[user].balance += 1
         sp.else:
@@ -670,43 +655,44 @@ class FA2(sp.Contract):
                      name = "", # Consered useless here
                      decimals = 0,
                      extras = sp.map({"value":principal, "earlyUnlockFee":stake, "unlockTime":( end_time - sp.timestamp(0) ) } )
-                     
+
                  )
              )
-    
-             
+        self.data.highestTokenIndex += 1
+
+
     @sp.entry_point
     def redeem_certificate(self, params):
-        
+
         # 0)  use params.token_id to look up certificate
-        certificate = self.data.tokens[params.token_id] 
-        
-        
+        certificate = self.data.tokens[params.token_id]
+
+
         # 1)  verify you are owner of certificate
         user = self.ledger_key.make(sp.sender, params.token_id)
         sp.verify( self.data.ledger.contains(user) )
-        
-        
+
+
         # 2)  Determine payout based on time
 
         unlockTime = certificate.metadata.extras["unlockTime"]
         payout = certificate.metadata.extras["value"]
         early_unlock_fee = certificate.metadata.extras["earlyUnlockFee"]
-        
+
         x = sp.now.add_seconds(- unlockTime )
-        
+
         sp.if (x - sp.timestamp(0) )  < 0:
             payout = payout - early_unlock_fee
-            
-            
-            
+
+
+
         # 3) Burn Certificate
         user = self.ledger_key.make(sp.sender, params.token_id)
         self.data.ledger[user].balance = 0
         self.data.tokens[params.token_id].total_supply = 0
-        
-        
-        # 4) Payout 
+
+
+        # 4) Payout
         sp.send( sp.sender, sp.mutez( sp.as_nat(payout) ))
 
 
@@ -740,15 +726,15 @@ def add_test(config, is_default = True):
                             amount = 100,
                             symbol = 'TK0',
                             token_id = 0).run(sender = admin)
-    
-                            
+
+
         scenario.h2("Create certificate")
-        scenario += c1.create_certificate(months = 5).run(sender = bob, amount=sp.mutez(100000000)) 
-        
+        scenario += c1.create_certificate(months = 5).run(sender = bob, amount=sp.mutez(100000000))
+
         scenario.h2("redeem  certificate")
-        scenario += c1.redeem_certificate(token_id = 1).run(sender = bob) 
-        
-        
+        scenario += c1.redeem_certificate(token_id = 1).run(sender = bob)
+
+
 
 ##
 ## ## Global Environment Parameters

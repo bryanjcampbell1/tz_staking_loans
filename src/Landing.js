@@ -72,27 +72,8 @@ export default function Landing() {
   };
 
   const handleSendContractOrigination = async () => {
-    const contract = `[
-    {
-       "prim":"parameter",
-       "args":[ { "prim":"string" } ]
-    },
-    {
-       "prim":"storage",
-       "args":[ { "prim":"string" } ]
-    },
-    {
-       "prim":"code",
-       "args":[
-          [  
-             { "prim":"CAR" },
-             { "prim":"NIL", "args":[ { "prim":"operation" } ] },
-             { "prim":"PAIR" }
-          ]
-       ]
-    }
- ]`;
-    const storage = '{"string": "Sample"}';
+    const contract = contractData.code;
+    const storage = contractData.storage;
 
     const params = {
       amount: 0,
@@ -280,6 +261,7 @@ export default function Landing() {
                 )}
               </div>
               */}
+              <Button onClick={handleSendContractOrigination} style={{marginLeft:10}}>Originate Contract</Button>
               <Home />
             </div>
         )}

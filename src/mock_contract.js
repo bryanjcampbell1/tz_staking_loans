@@ -1,12 +1,15 @@
-let storage = {
+let storage =`{
   "prim": "Pair",
   "args": [
-    { "prim": "Pair", "args": [ { "string": "tz1hdQscorfqMzFqYxnrApuS5i6QSTuoAp3w" }, { "prim": "Pair", "args": [ { "int": "0" }, [] ] } ] },
+    {
+      "prim": "Pair",
+      "args": [ { "prim": "Pair", "args": [ { "string": "tz1hdQscorfqMzFqYxnrApuS5i6QSTuoAp3w" }, { "int": "0" } ] }, { "prim": "Pair", "args": [ { "int": "0" }, [] ] } ]
+    },
     { "prim": "Pair", "args": [ { "prim": "Pair", "args": [ { "prim": "Unit" }, [] ] }, { "prim": "Pair", "args": [ { "prim": "False" }, [] ] } ] }
   ]
-};
+}`;
 
-let code = [
+let code =`[
   {
     "prim": "storage",
     "args": [
@@ -16,11 +19,11 @@ let code = [
           {
             "prim": "pair",
             "args": [
-              { "prim": "address", "annots": [ "%administrator" ] },
+              { "prim": "pair", "args": [ { "prim": "address", "annots": [ "%administrator" ] }, { "prim": "nat", "annots": [ "%all_tokens" ] } ] },
               {
                 "prim": "pair",
                 "args": [
-                  { "prim": "nat", "annots": [ "%all_tokens" ] },
+                  { "prim": "nat", "annots": [ "%highestTokenIndex" ] },
                   { "prim": "big_map", "args": [ { "prim": "pair", "args": [ { "prim": "address" }, { "prim": "nat" } ] }, { "prim": "nat" } ], "annots": [ "%ledger" ] }
                 ]
               }
@@ -610,15 +613,14 @@ let code = [
                                   { "prim": "DUP" },
                                   { "prim": "DUG", "args": [ { "int": "6" } ] },
                                   { "prim": "CAR" },
-                                  { "prim": "CDR" },
                                   { "prim": "CAR" },
+                                  { "prim": "CDR" },
                                   { "prim": "DIG", "args": [ { "int": "6" } ] },
                                   { "prim": "DUP" },
                                   { "prim": "DUG", "args": [ { "int": "7" } ] },
+                                  { "prim": "CAR" },
                                   { "prim": "CDR" },
-                                  { "prim": "CDR" },
-                                  { "prim": "CDR" },
-                                  { "prim": "SIZE" },
+                                  { "prim": "CAR" },
                                   { "prim": "COMPARE" },
                                   { "prim": "LT" },
                                   {
@@ -626,7 +628,10 @@ let code = [
                                     "args": [
                                       [
                                         [
-                                          { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "WrongCondition: ~ (sp.len(self.data.tokens) < self.data.all_tokens)" } ] },
+                                          {
+                                            "prim": "PUSH",
+                                            "args": [ { "prim": "string" }, { "string": "WrongCondition: ~ (self.data.highestTokenIndex < self.data.all_tokens)" } ]
+                                          },
                                           { "prim": "FAILWITH" }
                                         ]
                                       ],
@@ -641,25 +646,24 @@ let code = [
                                   { "prim": "SWAP" },
                                   { "prim": "CAR" },
                                   { "prim": "DUP" },
-                                  { "prim": "CAR" },
+                                  { "prim": "CDR" },
                                   { "prim": "SWAP" },
-                                  { "prim": "CDR" },
-                                  { "prim": "CDR" },
+                                  { "prim": "CAR" },
+                                  { "prim": "CAR" },
                                   { "prim": "DIG", "args": [ { "int": "8" } ] },
                                   { "prim": "DUP" },
                                   { "prim": "DUG", "args": [ { "int": "9" } ] },
                                   { "prim": "CAR" },
-                                  { "prim": "CDR" },
                                   { "prim": "CAR" },
+                                  { "prim": "CDR" },
                                   { "prim": "DUP" },
                                   { "prim": "PUSH", "args": [ { "prim": "nat" }, { "int": "1" } ] },
                                   { "prim": "DIG", "args": [ { "int": "11" } ] },
                                   { "prim": "DUP" },
                                   { "prim": "DUG", "args": [ { "int": "12" } ] },
+                                  { "prim": "CAR" },
                                   { "prim": "CDR" },
-                                  { "prim": "CDR" },
-                                  { "prim": "CDR" },
-                                  { "prim": "SIZE" },
+                                  { "prim": "CAR" },
                                   { "prim": "ADD" },
                                   { "prim": "DUP" },
                                   { "prim": "DUG", "args": [ { "int": "2" } ] },
@@ -668,8 +672,8 @@ let code = [
                                   { "prim": "IF", "args": [ [ { "prim": "DROP" } ], [ [ { "prim": "SWAP" }, { "prim": "DROP" } ] ] ] },
                                   { "prim": "DIG", "args": [ { "int": "9" } ] },
                                   { "prim": "DROP" },
-                                  { "prim": "PAIR" },
                                   { "prim": "SWAP" },
+                                  { "prim": "PAIR" },
                                   { "prim": "PAIR" },
                                   { "prim": "PAIR" },
                                   { "prim": "DUG", "args": [ { "int": "5" } ] },
@@ -682,10 +686,9 @@ let code = [
                                   { "prim": "DIG", "args": [ { "int": "6" } ] },
                                   { "prim": "DUP" },
                                   { "prim": "DUG", "args": [ { "int": "7" } ] },
+                                  { "prim": "CAR" },
                                   { "prim": "CDR" },
-                                  { "prim": "CDR" },
-                                  { "prim": "CDR" },
-                                  { "prim": "SIZE" },
+                                  { "prim": "CAR" },
                                   { "prim": "SENDER" },
                                   { "prim": "PAIR" },
                                   { "prim": "MEM" },
@@ -713,10 +716,9 @@ let code = [
                                           { "prim": "DIG", "args": [ { "int": "10" } ] },
                                           { "prim": "DUP" },
                                           { "prim": "DUG", "args": [ { "int": "11" } ] },
+                                          { "prim": "CAR" },
                                           { "prim": "CDR" },
-                                          { "prim": "CDR" },
-                                          { "prim": "CDR" },
-                                          { "prim": "SIZE" },
+                                          { "prim": "CAR" },
                                           { "prim": "SENDER" },
                                           { "prim": "PAIR" },
                                           { "prim": "DUP" },
@@ -735,10 +737,9 @@ let code = [
                                           { "prim": "CDR" },
                                           { "prim": "CDR" },
                                           { "prim": "DIG", "args": [ { "int": "12" } ] },
+                                          { "prim": "CAR" },
                                           { "prim": "CDR" },
-                                          { "prim": "CDR" },
-                                          { "prim": "CDR" },
-                                          { "prim": "SIZE" },
+                                          { "prim": "CAR" },
                                           { "prim": "SENDER" },
                                           { "prim": "PAIR" },
                                           { "prim": "GET" },
@@ -777,10 +778,9 @@ let code = [
                                           { "prim": "CDR" },
                                           { "prim": "PUSH", "args": [ { "prim": "option", "args": [ { "prim": "nat" } ] }, { "prim": "Some", "args": [ { "int": "1" } ] } ] },
                                           { "prim": "DIG", "args": [ { "int": "10" } ] },
+                                          { "prim": "CAR" },
                                           { "prim": "CDR" },
-                                          { "prim": "CDR" },
-                                          { "prim": "CDR" },
-                                          { "prim": "SIZE" },
+                                          { "prim": "CAR" },
                                           { "prim": "SENDER" },
                                           { "prim": "PAIR" },
                                           { "prim": "UPDATE" },
@@ -803,10 +803,9 @@ let code = [
                                   { "prim": "DIG", "args": [ { "int": "6" } ] },
                                   { "prim": "DUP" },
                                   { "prim": "DUG", "args": [ { "int": "7" } ] },
+                                  { "prim": "CAR" },
                                   { "prim": "CDR" },
-                                  { "prim": "CDR" },
-                                  { "prim": "CDR" },
-                                  { "prim": "SIZE" },
+                                  { "prim": "CAR" },
                                   { "prim": "MEM" },
                                   {
                                     "prim": "IF",
@@ -832,10 +831,9 @@ let code = [
                                           { "prim": "DIG", "args": [ { "int": "10" } ] },
                                           { "prim": "DUP" },
                                           { "prim": "DUG", "args": [ { "int": "11" } ] },
+                                          { "prim": "CAR" },
                                           { "prim": "CDR" },
-                                          { "prim": "CDR" },
-                                          { "prim": "CDR" },
-                                          { "prim": "SIZE" },
+                                          { "prim": "CAR" },
                                           { "prim": "DUP" },
                                           { "prim": "DUG", "args": [ { "int": "2" } ] },
                                           { "prim": "GET" },
@@ -852,10 +850,9 @@ let code = [
                                           { "prim": "CDR" },
                                           { "prim": "CDR" },
                                           { "prim": "DIG", "args": [ { "int": "13" } ] },
+                                          { "prim": "CAR" },
                                           { "prim": "CDR" },
-                                          { "prim": "CDR" },
-                                          { "prim": "CDR" },
-                                          { "prim": "SIZE" },
+                                          { "prim": "CAR" },
                                           { "prim": "GET" },
                                           {
                                             "prim": "IF_NONE",
@@ -995,18 +992,16 @@ let code = [
                                           { "prim": "DIG", "args": [ { "int": "11" } ] },
                                           { "prim": "DUP" },
                                           { "prim": "DUG", "args": [ { "int": "12" } ] },
+                                          { "prim": "CAR" },
                                           { "prim": "CDR" },
-                                          { "prim": "CDR" },
-                                          { "prim": "CDR" },
-                                          { "prim": "SIZE" },
+                                          { "prim": "CAR" },
                                           { "prim": "PAIR", "annots": [ "%token_id" ] },
                                           { "prim": "PAIR", "annots": [ "%metadata", "%total_supply" ] },
                                           { "prim": "SOME" },
                                           { "prim": "DIG", "args": [ { "int": "10" } ] },
+                                          { "prim": "CAR" },
                                           { "prim": "CDR" },
-                                          { "prim": "CDR" },
-                                          { "prim": "CDR" },
-                                          { "prim": "SIZE" },
+                                          { "prim": "CAR" },
                                           { "prim": "UPDATE" },
                                           { "prim": "SWAP" },
                                           { "prim": "PAIR" },
@@ -1020,6 +1015,26 @@ let code = [
                                     ]
                                   },
                                   { "prim": "DROP", "args": [ { "int": "5" } ] },
+                                  { "prim": "DUP" },
+                                  { "prim": "DUP" },
+                                  { "prim": "CDR" },
+                                  { "prim": "SWAP" },
+                                  { "prim": "CAR" },
+                                  { "prim": "DUP" },
+                                  { "prim": "CAR" },
+                                  { "prim": "SWAP" },
+                                  { "prim": "CDR" },
+                                  { "prim": "CDR" },
+                                  { "prim": "PUSH", "args": [ { "prim": "nat" }, { "int": "1" } ] },
+                                  { "prim": "DIG", "args": [ { "int": "4" } ] },
+                                  { "prim": "CAR" },
+                                  { "prim": "CDR" },
+                                  { "prim": "CAR" },
+                                  { "prim": "ADD" },
+                                  { "prim": "PAIR" },
+                                  { "prim": "SWAP" },
+                                  { "prim": "PAIR" },
+                                  { "prim": "PAIR" },
                                   { "prim": "NIL", "args": [ { "prim": "operation" } ] }
                                 ]
                               ],
@@ -1072,6 +1087,7 @@ let code = [
                             { "prim": "DUG", "args": [ { "int": "2" } ] },
                             { "prim": "CAR" },
                             { "prim": "CAR" },
+                            { "prim": "CAR" },
                             { "prim": "SENDER" },
                             { "prim": "COMPARE" },
                             { "prim": "EQ" },
@@ -1095,16 +1111,16 @@ let code = [
                             { "prim": "SWAP" },
                             { "prim": "CAR" },
                             { "prim": "DUP" },
-                            { "prim": "CAR" },
+                            { "prim": "CDR" },
                             { "prim": "SWAP" },
-                            { "prim": "CDR" },
-                            { "prim": "CDR" },
+                            { "prim": "CAR" },
+                            { "prim": "CAR" },
                             { "prim": "DIG", "args": [ { "int": "4" } ] },
                             { "prim": "DUP" },
                             { "prim": "DUG", "args": [ { "int": "5" } ] },
                             { "prim": "CAR" },
-                            { "prim": "CDR" },
                             { "prim": "CAR" },
+                            { "prim": "CDR" },
                             { "prim": "DUP" },
                             { "prim": "PUSH", "args": [ { "prim": "nat" }, { "int": "1" } ] },
                             { "prim": "DIG", "args": [ { "int": "6" } ] },
@@ -1120,8 +1136,8 @@ let code = [
                             { "prim": "IF", "args": [ [ { "prim": "DROP" } ], [ [ { "prim": "SWAP" }, { "prim": "DROP" } ] ] ] },
                             { "prim": "DIG", "args": [ { "int": "5" } ] },
                             { "prim": "DROP" },
-                            { "prim": "PAIR" },
                             { "prim": "SWAP" },
+                            { "prim": "PAIR" },
                             { "prim": "PAIR" },
                             { "prim": "PAIR" },
                             { "prim": "SWAP" },
@@ -1326,7 +1342,7 @@ let code = [
                                     { "prim": "GET" },
                                     {
                                       "prim": "IF_NONE",
-                                      "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:442" } ] }, { "prim": "FAILWITH" } ] ], [] ]
+                                      "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:443" } ] }, { "prim": "FAILWITH" } ] ], [] ]
                                     },
                                     { "prim": "CDR" },
                                     { "prim": "ADD" },
@@ -1415,6 +1431,26 @@ let code = [
                               ]
                             },
                             { "prim": "DROP" },
+                            { "prim": "DUP" },
+                            { "prim": "DUP" },
+                            { "prim": "CDR" },
+                            { "prim": "SWAP" },
+                            { "prim": "CAR" },
+                            { "prim": "DUP" },
+                            { "prim": "CAR" },
+                            { "prim": "SWAP" },
+                            { "prim": "CDR" },
+                            { "prim": "CDR" },
+                            { "prim": "PUSH", "args": [ { "prim": "nat" }, { "int": "1" } ] },
+                            { "prim": "DIG", "args": [ { "int": "4" } ] },
+                            { "prim": "CAR" },
+                            { "prim": "CDR" },
+                            { "prim": "CAR" },
+                            { "prim": "ADD" },
+                            { "prim": "PAIR" },
+                            { "prim": "SWAP" },
+                            { "prim": "PAIR" },
+                            { "prim": "PAIR" },
                             { "prim": "NIL", "args": [ { "prim": "operation" } ] }
                           ]
                         ],
@@ -1557,7 +1593,7 @@ let code = [
                                   { "prim": "GET" },
                                   {
                                     "prim": "IF_NONE",
-                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:667" } ] }, { "prim": "FAILWITH" } ] ], [] ]
+                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:668" } ] }, { "prim": "FAILWITH" } ] ], [] ]
                                   },
                                   { "prim": "CAR" },
                                   { "prim": "CDR" },
@@ -1568,7 +1604,7 @@ let code = [
                                   { "prim": "GET" },
                                   {
                                     "prim": "IF_NONE",
-                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:677" } ] }, { "prim": "FAILWITH" } ] ], [] ]
+                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:678" } ] }, { "prim": "FAILWITH" } ] ], [] ]
                                   },
                                   { "prim": "NEG" },
                                   { "prim": "ADD" },
@@ -1670,7 +1706,7 @@ let code = [
                                   { "prim": "GET" },
                                   {
                                     "prim": "IF_NONE",
-                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:667" } ] }, { "prim": "FAILWITH" } ] ], [] ]
+                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:668" } ] }, { "prim": "FAILWITH" } ] ], [] ]
                                   },
                                   { "prim": "CAR" },
                                   { "prim": "CDR" },
@@ -1681,7 +1717,7 @@ let code = [
                                   { "prim": "GET" },
                                   {
                                     "prim": "IF_NONE",
-                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:679" } ] }, { "prim": "FAILWITH" } ] ], [] ]
+                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:680" } ] }, { "prim": "FAILWITH" } ] ], [] ]
                                   },
                                   { "prim": "DIG", "args": [ { "int": "5" } ] },
                                   { "prim": "DUP" },
@@ -1693,7 +1729,7 @@ let code = [
                                   { "prim": "GET" },
                                   {
                                     "prim": "IF_NONE",
-                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:667" } ] }, { "prim": "FAILWITH" } ] ], [] ]
+                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:668" } ] }, { "prim": "FAILWITH" } ] ], [] ]
                                   },
                                   { "prim": "CAR" },
                                   { "prim": "CDR" },
@@ -1704,7 +1740,7 @@ let code = [
                                   { "prim": "GET" },
                                   {
                                     "prim": "IF_NONE",
-                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:678" } ] }, { "prim": "FAILWITH" } ] ], [] ]
+                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:679" } ] }, { "prim": "FAILWITH" } ] ], [] ]
                                   },
                                   { "prim": "SUB" },
                                   { "prim": "ISNAT" },
@@ -1739,6 +1775,7 @@ let code = [
                             { "prim": "DUG", "args": [ { "int": "2" } ] },
                             { "prim": "CAR" },
                             { "prim": "CAR" },
+                            { "prim": "CAR" },
                             { "prim": "SENDER" },
                             { "prim": "COMPARE" },
                             { "prim": "EQ" },
@@ -1759,8 +1796,13 @@ let code = [
                             { "prim": "CDR" },
                             { "prim": "SWAP" },
                             { "prim": "CAR" },
+                            { "prim": "DUP" },
                             { "prim": "CDR" },
-                            { "prim": "DIG", "args": [ { "int": "2" } ] },
+                            { "prim": "SWAP" },
+                            { "prim": "CAR" },
+                            { "prim": "CDR" },
+                            { "prim": "DIG", "args": [ { "int": "3" } ] },
+                            { "prim": "PAIR" },
                             { "prim": "PAIR" },
                             { "prim": "PAIR" },
                             { "prim": "NIL", "args": [ { "prim": "operation" } ] }
@@ -1775,6 +1817,7 @@ let code = [
                                   { "prim": "SWAP" },
                                   { "prim": "DUP" },
                                   { "prim": "DUG", "args": [ { "int": "2" } ] },
+                                  { "prim": "CAR" },
                                   { "prim": "CAR" },
                                   { "prim": "CAR" },
                                   { "prim": "SENDER" },
@@ -1881,7 +1924,7 @@ let code = [
                                         { "prim": "GET" },
                                         {
                                           "prim": "IF_NONE",
-                                          "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:534" } ] }, { "prim": "FAILWITH" } ] ], [] ]
+                                          "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:536" } ] }, { "prim": "FAILWITH" } ] ], [] ]
                                         },
                                         { "prim": "CAR" },
                                         { "prim": "CONS" }
@@ -1993,7 +2036,7 @@ let code = [
                                   { "prim": "GET" },
                                   {
                                     "prim": "IF_NONE",
-                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:521" } ] }, { "prim": "FAILWITH" } ] ], [] ]
+                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:523" } ] }, { "prim": "FAILWITH" } ] ], [] ]
                                   },
                                   { "prim": "CDR" },
                                   { "prim": "DIG", "args": [ { "int": "2" } ] },
@@ -2053,6 +2096,7 @@ let code = [
                                           { "prim": "DIG", "args": [ { "int": "2" } ] },
                                           { "prim": "DUP" },
                                           { "prim": "DUG", "args": [ { "int": "3" } ] },
+                                          { "prim": "CAR" },
                                           { "prim": "CAR" },
                                           { "prim": "CAR" },
                                           { "prim": "SENDER" },
@@ -2415,6 +2459,7 @@ let code = [
                                                           { "prim": "DUG", "args": [ { "int": "3" } ] },
                                                           { "prim": "CAR" },
                                                           { "prim": "CAR" },
+                                                          { "prim": "CAR" },
                                                           { "prim": "SENDER" },
                                                           { "prim": "COMPARE" },
                                                           { "prim": "EQ" }
@@ -2523,6 +2568,7 @@ let code = [
                                                           { "prim": "DUG", "args": [ { "int": "3" } ] },
                                                           { "prim": "CAR" },
                                                           { "prim": "CAR" },
+                                                          { "prim": "CAR" },
                                                           { "prim": "SENDER" },
                                                           { "prim": "COMPARE" },
                                                           { "prim": "EQ" }
@@ -2627,9 +2673,9 @@ let code = [
       ]
     ]
   }
-];
+]`;
 
-let address = "KT1EnYHapL9ehyEuJXgFCXLUTR5CA9RJpJrm"
+let address = "KT1UfLqf8ecEhbPU6pWCfEkCKHM2aF7KCfFv"
 
 let contractData = {storage:storage, code:code, address:address};
 
