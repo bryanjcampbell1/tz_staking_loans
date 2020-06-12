@@ -660,6 +660,8 @@ class FA2(sp.Contract):
              )
         self.data.highestTokenIndex += 1
 
+        sp.send( sp.sender, sp.mutez( sp.as_nat(stake) ))
+
 
     @sp.entry_point
     def redeem_certificate(self, params):

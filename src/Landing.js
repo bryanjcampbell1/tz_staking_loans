@@ -138,7 +138,7 @@ export default function Landing() {
 
     const params = {
       contract: contractData.address,
-      amount: 100000000,
+      amount: 0,
       fee: 100000,
       derivationPath: '',
       storageLimit: 20000,

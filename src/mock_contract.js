@@ -1014,8 +1014,9 @@ let code =`[
                                       ]
                                     ]
                                   },
-                                  { "prim": "DROP", "args": [ { "int": "5" } ] },
+                                  { "prim": "DIG", "args": [ { "int": "5" } ] },
                                   { "prim": "DUP" },
+                                  { "prim": "DUG", "args": [ { "int": "6" } ] },
                                   { "prim": "DUP" },
                                   { "prim": "CDR" },
                                   { "prim": "SWAP" },
@@ -1026,7 +1027,7 @@ let code =`[
                                   { "prim": "CDR" },
                                   { "prim": "CDR" },
                                   { "prim": "PUSH", "args": [ { "prim": "nat" }, { "int": "1" } ] },
-                                  { "prim": "DIG", "args": [ { "int": "4" } ] },
+                                  { "prim": "DIG", "args": [ { "int": "9" } ] },
                                   { "prim": "CAR" },
                                   { "prim": "CDR" },
                                   { "prim": "CAR" },
@@ -1035,7 +1036,67 @@ let code =`[
                                   { "prim": "SWAP" },
                                   { "prim": "PAIR" },
                                   { "prim": "PAIR" },
-                                  { "prim": "NIL", "args": [ { "prim": "operation" } ] }
+                                  { "prim": "DUG", "args": [ { "int": "5" } ] },
+                                  { "prim": "NIL", "args": [ { "prim": "operation" } ] },
+                                  { "prim": "SENDER" },
+                                  { "prim": "CONTRACT", "args": [ { "prim": "unit" } ] },
+                                  { "prim": "IF_NONE", "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "unit" }, { "prim": "Unit" } ] }, { "prim": "FAILWITH" } ] ], [ [] ] ] },
+                                  { "prim": "PUSH", "args": [ { "prim": "mutez" }, { "int": "1" } ] },
+                                  { "prim": "DIG", "args": [ { "int": "4" } ] },
+                                  { "prim": "DUP" },
+                                  { "prim": "DUG", "args": [ { "int": "5" } ] },
+                                  { "prim": "ISNAT" },
+                                  { "prim": "IF_NONE", "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "unit" }, { "prim": "Unit" } ] }, { "prim": "FAILWITH" } ] ], [ [] ] ] },
+                                  { "prim": "DIG", "args": [ { "int": "5" } ] },
+                                  { "prim": "DUP" },
+                                  { "prim": "DUG", "args": [ { "int": "6" } ] },
+                                  { "prim": "DIG", "args": [ { "int": "8" } ] },
+                                  { "prim": "DUP" },
+                                  { "prim": "DUG", "args": [ { "int": "9" } ] },
+                                  { "prim": "SUB" },
+                                  { "prim": "PUSH", "args": [ { "prim": "mutez" }, { "int": "1" } ] },
+                                  { "prim": "PUSH", "args": [ { "prim": "nat" }, { "int": "100" } ] },
+                                  { "prim": "AMOUNT" },
+                                  { "prim": "PUSH", "args": [ { "prim": "nat" }, { "int": "100" } ] },
+                                  { "prim": "MUL" },
+                                  { "prim": "EDIV" },
+                                  {
+                                    "prim": "IF_NONE",
+                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "split_tokens" } ] }, { "prim": "FAILWITH" } ] ], [] ]
+                                  },
+                                  { "prim": "CAR" },
+                                  { "prim": "EDIV" },
+                                  { "prim": "IF_NONE", "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "unit" }, { "prim": "Unit" } ] }, { "prim": "FAILWITH" } ] ], [ [] ] ] },
+                                  { "prim": "CAR" },
+                                  { "prim": "INT" },
+                                  { "prim": "MUL" },
+                                  { "prim": "ISNAT" },
+                                  { "prim": "IF_NONE", "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "unit" }, { "prim": "Unit" } ] }, { "prim": "FAILWITH" } ] ], [ [] ] ] },
+                                  { "prim": "EDIV" },
+                                  {
+                                    "prim": "IF_NONE",
+                                    "args": [
+                                      [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "division by zero" } ] }, { "prim": "FAILWITH" } ] ],
+                                      [ { "prim": "CAR" } ]
+                                    ]
+                                  },
+                                  { "prim": "DIG", "args": [ { "int": "4" } ] },
+                                  { "prim": "DROP" },
+                                  { "prim": "DIG", "args": [ { "int": "4" } ] },
+                                  { "prim": "DROP" },
+                                  { "prim": "DIG", "args": [ { "int": "4" } ] },
+                                  { "prim": "DROP" },
+                                  { "prim": "DIG", "args": [ { "int": "4" } ] },
+                                  { "prim": "DROP" },
+                                  { "prim": "DIG", "args": [ { "int": "4" } ] },
+                                  { "prim": "DROP" },
+                                  { "prim": "INT" },
+                                  { "prim": "ISNAT" },
+                                  { "prim": "IF_NONE", "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "unit" }, { "prim": "Unit" } ] }, { "prim": "FAILWITH" } ] ], [ [] ] ] },
+                                  { "prim": "MUL" },
+                                  { "prim": "PUSH", "args": [ { "prim": "unit" }, { "prim": "Unit" } ] },
+                                  { "prim": "TRANSFER_TOKENS" },
+                                  { "prim": "CONS" }
                                 ]
                               ],
                               [
@@ -1593,7 +1654,7 @@ let code =`[
                                   { "prim": "GET" },
                                   {
                                     "prim": "IF_NONE",
-                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:668" } ] }, { "prim": "FAILWITH" } ] ], [] ]
+                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:670" } ] }, { "prim": "FAILWITH" } ] ], [] ]
                                   },
                                   { "prim": "CAR" },
                                   { "prim": "CDR" },
@@ -1604,7 +1665,7 @@ let code =`[
                                   { "prim": "GET" },
                                   {
                                     "prim": "IF_NONE",
-                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:678" } ] }, { "prim": "FAILWITH" } ] ], [] ]
+                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:680" } ] }, { "prim": "FAILWITH" } ] ], [] ]
                                   },
                                   { "prim": "NEG" },
                                   { "prim": "ADD" },
@@ -1706,7 +1767,7 @@ let code =`[
                                   { "prim": "GET" },
                                   {
                                     "prim": "IF_NONE",
-                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:668" } ] }, { "prim": "FAILWITH" } ] ], [] ]
+                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:670" } ] }, { "prim": "FAILWITH" } ] ], [] ]
                                   },
                                   { "prim": "CAR" },
                                   { "prim": "CDR" },
@@ -1717,7 +1778,7 @@ let code =`[
                                   { "prim": "GET" },
                                   {
                                     "prim": "IF_NONE",
-                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:680" } ] }, { "prim": "FAILWITH" } ] ], [] ]
+                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:682" } ] }, { "prim": "FAILWITH" } ] ], [] ]
                                   },
                                   { "prim": "DIG", "args": [ { "int": "5" } ] },
                                   { "prim": "DUP" },
@@ -1729,7 +1790,7 @@ let code =`[
                                   { "prim": "GET" },
                                   {
                                     "prim": "IF_NONE",
-                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:668" } ] }, { "prim": "FAILWITH" } ] ], [] ]
+                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:670" } ] }, { "prim": "FAILWITH" } ] ], [] ]
                                   },
                                   { "prim": "CAR" },
                                   { "prim": "CDR" },
@@ -1740,7 +1801,7 @@ let code =`[
                                   { "prim": "GET" },
                                   {
                                     "prim": "IF_NONE",
-                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:679" } ] }, { "prim": "FAILWITH" } ] ], [] ]
+                                    "args": [ [ [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "Get-item:681" } ] }, { "prim": "FAILWITH" } ] ], [] ]
                                   },
                                   { "prim": "SUB" },
                                   { "prim": "ISNAT" },
@@ -2675,7 +2736,7 @@ let code =`[
   }
 ]`;
 
-let address = "KT1UfLqf8ecEhbPU6pWCfEkCKHM2aF7KCfFv"
+let address = "KT1W8UHAJw81u5dcB42Ux7BKmPPX33XCPzdv"
 
 let contractData = {storage:storage, code:code, address:address};
 
