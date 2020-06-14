@@ -3,6 +3,18 @@ import {Button, Modal, Card,} from 'react-bootstrap';
 
 import {X} from 'react-bootstrap-icons';
 
+import { Magic } from "magic-sdk";
+import { TezosExtension } from "@magic-ext/tezos";
+import contractData from "./mock_contract";
+
+const magic = new Magic("pk_test_8363773537E9D19E", {
+    extensions: {
+        tezos: new TezosExtension({
+            rpcUrl: "https://tezos-dev.cryptonomic-infra.tech:443/"
+        })
+    }
+});
+
 class PreviewModal extends Component {
     constructor(props) {
         super(props)
@@ -11,8 +23,37 @@ class PreviewModal extends Component {
         }
     }
 
-    createCertificate(){
-        console.log('here');
+    async createCertificate(){
+
+        const params = {
+            contract: contractData.address,
+            amount: (this.props.deposit+1)*1000000,
+            fee: 100000,
+            derivationPath: '',
+            storageLimit: 20000,
+            gasLimit: 500000,
+            entrypoint: '',
+            parameters: `(Left (Left (Right (Left ${ this.props.months }))))`,
+            parameterFormat: 'michelson'
+        };
+
+        const result = await magic.tezos.sendContractInvocationOperation(
+            params.contract,
+            params.amount,
+            params.fee,
+            params.derivationPath,
+            params.storageLimit,
+            params.gasLimit,
+            params.entrypoint,
+            params.parameters,
+            params.parameterFormat
+        );
+        console.log(`Injected operation`, result);
+
+
+
+
+
         this.setState({screen: 2});
     }
 

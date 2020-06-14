@@ -3,17 +3,53 @@ import {Button, Modal, Card,} from 'react-bootstrap';
 
 import {X} from 'react-bootstrap-icons';
 
+import { Magic } from "magic-sdk";
+import { TezosExtension } from "@magic-ext/tezos";
+import contractData from "./mock_contract";
+
+const magic = new Magic("pk_test_8363773537E9D19E", {
+    extensions: {
+        tezos: new TezosExtension({
+            rpcUrl: "https://tezos-dev.cryptonomic-infra.tech:443/"
+        })
+    }
+});
+
 class UnlockModal extends Component {
     constructor(props) {
         super(props)
-        this.state = {screen: 1,
+        this.state = {screen: 1, certificate_id:3, hash:''
 
         }
     }
 
-    unlock(){
-        console.log('here');
-        this.setState({screen: 2});
+    async unlock(){
+
+        const params = {
+            contract: contractData.address,
+            amount: 0,
+            fee: 100000,
+            derivationPath: '',
+            storageLimit: 20000,
+            gasLimit: 500000,
+            entrypoint: '',
+            parameters: `(Left (Right (Right (Right ${this.state.certificate_id}))))`,
+            parameterFormat: 'michelson'
+        };
+
+        const result = await magic.tezos.sendContractInvocationOperation(
+            params.contract,
+            params.amount,
+            params.fee,
+            params.derivationPath,
+            params.storageLimit,
+            params.gasLimit,
+            params.entrypoint,
+            params.parameters,
+            params.parameterFormat
+        );
+        console.log(`Injected operation`, result);
+        this.setState({hash:result.operationGroupID, screen: 2});
     }
 
     hideModal(){
@@ -80,7 +116,7 @@ class UnlockModal extends Component {
                                                     <div style={{display:'flex'}}>
                                                         <p style={{fontWeight:'bold', fontSize:14, color:'slate'}}>Transaction Hash</p>
                                                         <p style={{fontSize:14, color:'slate'}}>&nbsp; | &nbsp; </p>
-                                                        <p style={{fontSize:14, color:'slate'}}> ooasdaradreraravafvafvafdfv</p>
+                                                        <p style={{fontSize:12, color:'slate'}}> {this.state.hash}</p>
                                                     </div>
                                                 </Card.Body>
                                             </Card>

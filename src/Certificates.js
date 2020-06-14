@@ -1,10 +1,25 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from "react";
 import { Button, Row, Col, Card } from 'react-bootstrap';
 import SendModal from "./SendModal";
 import UnlockEarlyModal from "./UnlockEarlyModal";
 import UnlockModal from "./UnlockModal";
 
-import moment from 'moment'
+import moment from 'moment';
+
+import contractData from "./mock_contract";
+
+import { Magic } from "magic-sdk";
+import { TezosExtension } from "@magic-ext/tezos";
+
+
+const magic = new Magic("pk_test_8363773537E9D19E", {
+    extensions: {
+        tezos: new TezosExtension({
+            rpcUrl: "https://tezos-dev.cryptonomic-infra.tech:443/"
+        })
+    }
+});
+
 
 let c1 = {
     id: 320,
@@ -80,7 +95,7 @@ const Certificate = (props) =>{
 }
 
 
-class Certificates extends Component {
+class Certificates extends React.Component {
     constructor(props) {
         super(props)
         this.state = { account: '',
@@ -94,25 +109,12 @@ class Certificates extends Component {
         }
     }
 
-    componentDidMount = async () => {
-        try {
-
-            //const web3 = await getWeb3();
-            //const accounts = await web3.eth.getAccounts();
-
-            //await this.setState({ web3, accounts, } );
-            //this.getData();
-
-        } catch (error) {
-
-            console.error(error);
-        }
-    }
 
     hideModals(){
         this.setState({unlockEarlyModalShow:false, unlockModalShow: false,sendModalShow:false })
         this.forceUpdate();
     }
+
 
 
     render() {

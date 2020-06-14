@@ -10,61 +10,21 @@ import {Button,
 
 import PreviewModal from "./PreviewModal";
 import moment from 'moment'
-import {Magic} from "magic-sdk";
-import {TezosExtension} from "@magic-ext/tezos";
-
-const magic = new Magic("pk_test_8363773537E9D19E", {
-    extensions: {
-        tezos: new TezosExtension({
-            rpcUrl: "https://tezos-dev.cryptonomic-infra.tech:443/"
-        })
-    }
-});
-
-const handleInvokeContract = async () => {
-
-    const params = {
-        contract: 'KT1NXXLzk3rwnawPc4HwDn8siPkMaBjT5Hdr',
-        amount: 0,
-        fee: 100000,
-        derivationPath: '',
-        storageLimit: 1000,
-        gasLimit: 100000,
-        entrypoint: '',
-        parameters: '{"string": "Cryptonomicon"}',
-        parameterFormat: 'micheline'
-    };
-
-    const result = await magic.tezos.sendContractInvocationOperation(
-        params.contract,
-        params.amount,
-        params.fee,
-        params.derivationPath,
-        params.storageLimit,
-        params.gasLimit,
-        params.entrypoint,
-        params.parameters,
-        params.parameterFormat
-    );
-    console.log(`Injected operation`, result);
-};
-
 
 
 class Home extends Component {
     constructor(props) {
         super(props)
+
         this.state = { account: '',
             previewModalShow: false,
-            web3:null,
-            accounts: null,
             deposit:0,
             duration:0,
             currency:'XTZ',
             currencyConversion: 1,
             returnRate: 0.01,
-            unlockDate: moment(Date.now()).add(3, 'months').calendar()
-
+            unlockDate: moment(Date.now()).add(3, 'months').calendar(),
+            months:3,
         }
     }
 
@@ -96,28 +56,28 @@ class Home extends Component {
 
         if(e==='3 Months'){
 
-            this.setState({returnRate: 0.01, unlockDate:endDateMoment.add(3, 'months').calendar() })
+            this.setState({returnRate: 0.01, months:3, unlockDate:endDateMoment.add(3, 'months').calendar() })
         }
         else if(e==='6 Months'){
-            this.setState({returnRate: 0.021, unlockDate:endDateMoment.add(6, 'months').calendar()})
+            this.setState({returnRate: 0.021, months:6, unlockDate:endDateMoment.add(6, 'months').calendar()})
         }
         else if(e==='9 Months'){
-            this.setState({returnRate: 0.033, unlockDate:endDateMoment.add(9, 'months').calendar()})
+            this.setState({returnRate: 0.033, months:9, unlockDate:endDateMoment.add(9, 'months').calendar()})
         }
         else if(e==='1 Year'){
-            this.setState({returnRate: 0.0406, unlockDate:endDateMoment.add(12, 'months').calendar()})
+            this.setState({returnRate: 0.0406, months:12, unlockDate:endDateMoment.add(12, 'months').calendar()})
         }
         else if(e==='15 Months'){
-            this.setState({returnRate: 0.0510, unlockDate:endDateMoment.add(15, 'months').calendar()})
+            this.setState({returnRate: 0.0510, months:15, unlockDate:endDateMoment.add(15, 'months').calendar()})
         }
         else if(e==='18 Months'){
-            this.setState({returnRate: 0.0615, unlockDate:endDateMoment.add(18, 'months').calendar()})
+            this.setState({returnRate: 0.0615, months:18, unlockDate:endDateMoment.add(18, 'months').calendar()})
         }
         else if(e==='21 Months'){
-            this.setState({returnRate: 0.0721, unlockDate:endDateMoment.add(21, 'months').calendar()})
+            this.setState({returnRate: 0.0721, months:21, unlockDate:endDateMoment.add(21, 'months').calendar()})
         }
         else{
-            this.setState({returnRate: 0.0829, unlockDate:endDateMoment.add(24, 'months').calendar()})
+            this.setState({returnRate: 0.0829, months:24, unlockDate:endDateMoment.add(24, 'months').calendar()})
         }
 
     }
@@ -227,6 +187,7 @@ class Home extends Component {
                     stake={ this.state.deposit*this.state.returnRate*this.state.currencyConversion }
                     currency={this.state.currency}
                     date={this.state.unlockDate}
+                    months={this.state.months}
                 />
             </div>
         )
