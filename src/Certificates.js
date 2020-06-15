@@ -5,18 +5,23 @@ import UnlockEarlyModal from "./UnlockEarlyModal";
 import UnlockModal from "./UnlockModal";
 
 import moment from 'moment';
-import { Tezos } from "@taquito/taquito";
+import { Magic } from "magic-sdk";
+import { TezosExtension } from "@magic-ext/tezos";
 
 import contractData from "./mock_contract";
-
-
 
 import firebase from './firebase';
 require("firebase/firestore");
 var db = firebase.firestore();
 
+const magic = new Magic("pk_test_8363773537E9D19E", {
+    extensions: {
+        tezos: new TezosExtension({
+            rpcUrl: "https://tezos-dev.cryptonomic-infra.tech:443/"
+        })
+    }
+});
 
-Tezos.setProvider({ rpc: "https://tezos-dev.cryptonomic-infra.tech:443/" });
 
 
 let c1 = {
@@ -107,8 +112,28 @@ class Certificates extends React.Component {
 
     componentDidMount = async () => {
         try {
+            //get certs
+            const publicAddress = await magic.tezos.getAccount();
 
 
+            let certsRef = db.collection("certificates");
+            let query = certsRef.where("owner", "==", publicAddress ).where("redeemed", "==", false);
+
+            let certificates = []
+            await query.get()
+                .then(function(querySnapshot) {
+                    querySnapshot.forEach(function(doc) {
+                        // doc.data() is never undefined for query doc snapshots
+                        console.log(doc.id, " => ", doc.data());
+                        certificates.push(doc.data());
+
+                    });
+                })
+                .catch(function(error) {
+                    console.log("Error getting documents: ", error);
+                });
+
+            console.log(certificates);
 
         } catch (error) {
 

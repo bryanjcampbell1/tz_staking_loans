@@ -62,6 +62,7 @@ class PreviewModal extends Component {
             parameterFormat: 'michelson'
         };
 
+        /*
         const result = await magic.tezos.sendContractInvocationOperation(
             params.contract,
             params.amount,
@@ -74,7 +75,7 @@ class PreviewModal extends Component {
             params.parameterFormat
         );
         console.log(`Injected operation`, result);
-
+*/
         let nextId = lastId + 1;
         const publicAddress = await magic.tezos.getAccount();
         await db.collection("certificates").add({
