@@ -7,6 +7,8 @@ import { Magic } from "magic-sdk";
 import { TezosExtension } from "@magic-ext/tezos";
 import contractData from "./mock_contract";
 
+
+
 const magic = new Magic("pk_test_8363773537E9D19E", {
     extensions: {
         tezos: new TezosExtension({

@@ -12,6 +12,8 @@
 /build
 
 # misc
+/src/firebase.js
+
 .DS_Store
 .env.local
 .env.development.local

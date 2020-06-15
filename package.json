@@ -4,10 +4,13 @@
   "private": true,
   "dependencies": {
     "@magic-ext/tezos": "^0.1.9",
+    "@taquito/taquito": "^6.3.0-wallet.4",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "bootstrap": "^4.5.0",
+    "eztz-lib": "^0.1.2",
+    "firebase": "^7.15.1",
     "magic-sdk": "^1.4.0",
     "moment": "^2.26.0",
     "react": "^16.13.1",

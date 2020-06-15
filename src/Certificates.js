@@ -5,20 +5,18 @@ import UnlockEarlyModal from "./UnlockEarlyModal";
 import UnlockModal from "./UnlockModal";
 
 import moment from 'moment';
+import { Tezos } from "@taquito/taquito";
 
 import contractData from "./mock_contract";
 
-import { Magic } from "magic-sdk";
-import { TezosExtension } from "@magic-ext/tezos";
 
 
-const magic = new Magic("pk_test_8363773537E9D19E", {
-    extensions: {
-        tezos: new TezosExtension({
-            rpcUrl: "https://tezos-dev.cryptonomic-infra.tech:443/"
-        })
-    }
-});
+import firebase from './firebase';
+require("firebase/firestore");
+var db = firebase.firestore();
+
+
+Tezos.setProvider({ rpc: "https://tezos-dev.cryptonomic-infra.tech:443/" });
 
 
 let c1 = {
@@ -102,10 +100,19 @@ class Certificates extends React.Component {
             sendModalShow: false,
             unlockModalShow:false,
             unlockEarlyModalShow:false,
-            web3:null,
-            accounts: null,
             certsArray: mock_data,
             index:0
+        }
+    }
+
+    componentDidMount = async () => {
+        try {
+
+
+
+        } catch (error) {
+
+            console.error(error);
         }
     }
 
@@ -115,6 +122,20 @@ class Certificates extends React.Component {
         this.forceUpdate();
     }
 
+    fbTest(){
+        db.collection("users").add({
+            first: "Ada",
+            last: "Lovelace",
+            born: 1815
+        })
+            .then(function(docRef) {
+                console.log("Document written with ID: ", docRef.id);
+            })
+            .catch(function(error) {
+                console.error("Error adding document: ", error);
+            });
+
+    }
 
 
     render() {
@@ -151,6 +172,7 @@ class Certificates extends React.Component {
                     </Col>
                     <Col></Col>
                 </Row>
+                <Button onClick={()=> this.fbTest()}>Firebase Test</Button>
                 <SendModal
                     show={this.state.sendModalShow}
                     onHide={() => this.hideModals()}
