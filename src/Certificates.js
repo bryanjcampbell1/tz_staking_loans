@@ -122,22 +122,6 @@ class Certificates extends React.Component {
         this.forceUpdate();
     }
 
-    fbTest(){
-        db.collection("users").add({
-            first: "Ada",
-            last: "Lovelace",
-            born: 1815
-        })
-            .then(function(docRef) {
-                console.log("Document written with ID: ", docRef.id);
-            })
-            .catch(function(error) {
-                console.error("Error adding document: ", error);
-            });
-
-    }
-
-
     render() {
         return (
             <div>
@@ -172,7 +156,6 @@ class Certificates extends React.Component {
                     </Col>
                     <Col></Col>
                 </Row>
-                <Button onClick={()=> this.fbTest()}>Firebase Test</Button>
                 <SendModal
                     show={this.state.sendModalShow}
                     onHide={() => this.hideModals()}

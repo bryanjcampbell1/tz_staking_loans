@@ -7,6 +7,10 @@ import { Magic } from "magic-sdk";
 import { TezosExtension } from "@magic-ext/tezos";
 import contractData from "./mock_contract";
 
+import firebase from './firebase';
+import {Tezos} from "@taquito/taquito";
+require("firebase/firestore");
+var db = firebase.firestore();
 
 
 const magic = new Magic("pk_test_8363773537E9D19E", {
@@ -26,6 +30,25 @@ class PreviewModal extends Component {
     }
 
     async createCertificate(){
+        let that = this;
+        let lastId = 0;
+        //get last certificate id
+        let lastIdRef = db.collection("last_Id").doc("last_Id");
+
+        await lastIdRef.get().then(function(doc) {
+            if (doc.exists) {
+                console.log("Document data:", doc.data().last_Id);
+
+                lastId = doc.data().last_Id;
+
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+            }
+        }).catch(function(error) {
+            console.log("Error getting document:", error);
+        });
+
 
         const params = {
             contract: contractData.address,
@@ -52,8 +75,26 @@ class PreviewModal extends Component {
         );
         console.log(`Injected operation`, result);
 
+        let nextId = lastId + 1;
+        const publicAddress = await magic.tezos.getAccount();
+        await db.collection("certificates").add({
+            id: nextId ,
+            amount: params.amount,
+            stakePaid: this.props.stake,
+            date: this.props.date,
+            redeemed:false,
+            owner:publicAddress
+        })
+        .then(function(docRef) {
+            console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+            console.error("Error adding document: ", error);
+        });
 
-
+        //increment last_Id
+        const increment = firebase.firestore.FieldValue.increment(1)
+        await lastIdRef.update({ last_Id: increment });
 
 
         this.setState({screen: 2});
