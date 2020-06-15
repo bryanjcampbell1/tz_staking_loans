@@ -50,9 +50,13 @@ let mock_data = [c1,c2,c3];
 
 const Certificate = (props) =>{
 
-    let rVal = 255*(props.id)/(props.id +255)
-    let gVal = 255*(props.id)/(props.id*props.id)
-    let bVal = 255 - 255*(props.id)/(props.id*props.id)
+    //let rVal = 255*(props.id)/(props.id +255)
+    //let gVal = 255*(props.id)/(props.id*props.id)
+    //let bVal = 255 - 255*(props.id)/(props.id*props.id)
+
+    let rVal = 255*Math.random()
+    let gVal = 255*Math.random()
+    let bVal = 255*Math.random()
 
     let rgb = `rgb(${rVal}, ${gVal}, ${bVal})`
 
@@ -134,6 +138,7 @@ class Certificates extends React.Component {
                 });
 
             console.log(certificates);
+            this.setState({certsArray:certificates })
 
         } catch (error) {
 
@@ -168,12 +173,12 @@ class Certificates extends React.Component {
                             this.state.certsArray.map((row, key) =>
                                 <div style={{marginTop:20}}>
                                     <Certificate amount={row.amount}
-                                                 date={moment(row.date).calendar()}
+                                                 date={row.date}
                                                  id={row.id}
                                                  showSend={() => this.setState({sendModalShow:true, index:key})}
                                                  showUnlock={() => this.setState({unlockModalShow:true, index:key})}
                                                  showUnlockEarly={() => this.setState({unlockEarlyModalShow:true, index:key})}
-                                                 unlocked={Date.now() > row.date}
+                                                 unlocked={Date.now() > Date.parse(row.date) }
                                     />
                                 </div>
                             )

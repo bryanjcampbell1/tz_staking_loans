@@ -80,7 +80,7 @@ class PreviewModal extends Component {
         const publicAddress = await magic.tezos.getAccount();
         await db.collection("certificates").add({
             id: nextId ,
-            amount: params.amount,
+            amount: this.props.deposit,
             stakePaid: this.props.stake,
             date: this.props.date,
             redeemed:false,
