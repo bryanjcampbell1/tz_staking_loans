@@ -125,9 +125,17 @@ class UnlockModal extends Component {
                                                 <Card.Body>
                                                     <p style={{fontWeight:'bold', fontSize:14, color:'slate',marginTop:10}}>{this.props.amount} XTZ has been returned to your account</p>
                                                     <div style={{display:'flex'}}>
-                                                        <p style={{fontWeight:'bold', fontSize:14, color:'slate'}}>Transaction Hash</p>
+                                                        <p style={{fontWeight:'bold', fontSize:14, color:'slate'}}>Transaction</p>
                                                         <p style={{fontSize:14, color:'slate'}}>&nbsp; | &nbsp; </p>
-                                                        <p style={{fontSize:12, color:'slate'}}> {this.state.hash}</p>
+                                                        <a href={`https://carthagenet.tezblock.io/transaction/${this.state.hash}`}
+                                                           style={{
+                                                               fontSize:12,
+                                                               whiteSpace: 'nowrap',
+                                                               overflow: 'hidden',
+                                                               textOverflow: 'ellipsis'
+                                                           }}>
+                                                            {this.state.hash}
+                                                        </a>
                                                     </div>
                                                 </Card.Body>
                                             </Card>

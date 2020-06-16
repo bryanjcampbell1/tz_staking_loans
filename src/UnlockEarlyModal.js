@@ -60,7 +60,9 @@ class UnlockEarlyModal extends Component {
         }, { merge: true })
 
 
-        this.setState({hash:result.operationGroupID, screen: 2});
+        let hash = result.operationGroupID.substring(1, result.operationGroupID.length-1);
+
+        this.setState({hash:hash, screen: 2});
     }
 
     hideModal(){
@@ -132,9 +134,17 @@ class UnlockEarlyModal extends Component {
                                                 <Card.Body>
                                                     <p style={{fontWeight:'bold', fontSize:14, color:'slate',marginTop:10}}>{this.props.amount - this.props.stake} XTZ has been returned to your account</p>
                                                     <div style={{display:'flex'}}>
-                                                        <p style={{fontWeight:'bold', fontSize:14, color:'slate'}}>Transaction Hash</p>
+                                                        <p style={{fontWeight:'bold', fontSize:14, color:'slate'}}>Transaction</p>
                                                         <p style={{fontSize:14, color:'slate'}}>&nbsp; | &nbsp; </p>
-                                                        <p style={{fontSize:14, color:'slate'}}> ooasdaradreraravafvafvafdfv</p>
+                                                        <a href={`https://carthagenet.tezblock.io/transaction/${this.state.hash}`}
+                                                           style={{
+                                                               fontSize:12,
+                                                               whiteSpace: 'nowrap',
+                                                               overflow: 'hidden',
+                                                               textOverflow: 'ellipsis'
+                                                           }}>
+                                                            {this.state.hash}
+                                                        </a>
                                                     </div>
                                                 </Card.Body>
                                             </Card>
