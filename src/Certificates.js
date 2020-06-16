@@ -22,7 +22,7 @@ const magic = new Magic("pk_test_8363773537E9D19E", {
     }
 });
 
-
+/*
 
 let c1 = {
     id: 320,
@@ -46,7 +46,7 @@ let c3 = {
 
 let mock_data = [c1,c2,c3];
 
-
+*/
 
 const Certificate = (props) =>{
 
@@ -109,7 +109,7 @@ class Certificates extends React.Component {
             sendModalShow: false,
             unlockModalShow:false,
             unlockEarlyModalShow:false,
-            certsArray: mock_data,
+            certsArray: [],
             index:0
         }
     }
@@ -147,9 +147,34 @@ class Certificates extends React.Component {
     }
 
 
-    hideModals(){
+    async hideModals(){
         this.setState({unlockEarlyModalShow:false, unlockModalShow: false,sendModalShow:false })
-        this.forceUpdate();
+
+        const publicAddress = await magic.tezos.getAccount();
+
+        let certsRef = db.collection("certificates");
+        let query = certsRef.where("owner", "==", publicAddress ).where("redeemed", "==", false);
+
+        let certificates = []
+        await query.get()
+            .then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {
+                    // doc.data() is never undefined for query doc snapshots
+                    console.log(doc.id, " => ", doc.data());
+                    certificates.push(doc.data());
+
+                });
+            })
+            .catch(function(error) {
+                console.log("Error getting documents: ", error);
+            });
+
+        console.log(certificates);
+        this.setState({certsArray:certificates,
+            unlockEarlyModalShow:false,
+            unlockModalShow: false,
+            sendModalShow:false })
+
     }
 
     render() {
@@ -183,29 +208,44 @@ class Certificates extends React.Component {
                                 </div>
                             )
                         }
+                        { (this.state.certsArray.length === 0)?
+                            <div style={{height:600}}></div>
+                            :
+                            <div>
+                            </div>
+                        }
                     </Col>
                     <Col></Col>
                 </Row>
-                <SendModal
-                    show={this.state.sendModalShow}
-                    onHide={() => this.hideModals()}
-                    amount={this.state.certsArray[this.state.index].amount}
-                    date={ moment(this.state.certsArray[this.state.index].date).calendar()}
-                />
-                <UnlockEarlyModal
-                    show={this.state.unlockEarlyModalShow}
-                    onHide={() => this.hideModals()}
-                    amount={this.state.certsArray[this.state.index].amount}
-                    date={moment(this.state.certsArray[this.state.index].date).calendar()}
-                    stake={this.state.certsArray[this.state.index].stakePaid}
-                />
-                <UnlockModal
-                    show={this.state.unlockModalShow}
-                    onHide={() => this.hideModals()}
-                    amount={this.state.certsArray[this.state.index].amount}
-                    date={moment(this.state.certsArray[this.state.index].date).calendar()}
-                    stake={this.state.certsArray[this.state.index].stakePaid}
-                />
+                { (this.state.certsArray.length === 0)?
+                    <div></div>
+                    :
+                    <div>
+                        <SendModal
+                            show={this.state.sendModalShow}
+                            onHide={() => this.hideModals()}
+                            amount={this.state.certsArray[this.state.index].amount}
+                            date={ moment(this.state.certsArray[this.state.index].date).calendar()}
+                            certificate_id={this.state.certsArray[this.state.index].id}
+                        />
+                        <UnlockEarlyModal
+                            show={this.state.unlockEarlyModalShow}
+                            certificate_id={this.state.certsArray[this.state.index].id}
+                            onHide={() => this.hideModals()}
+                            amount={this.state.certsArray[this.state.index].amount}
+                            date={moment(this.state.certsArray[this.state.index].date).calendar()}
+                            stake={this.state.certsArray[this.state.index].stakePaid}
+                        />
+                        <UnlockModal
+                            show={this.state.unlockModalShow}
+                            certificate_id={this.state.certsArray[this.state.index].id}
+                            onHide={() => this.hideModals()}
+                            amount={this.state.certsArray[this.state.index].amount}
+                            date={moment(this.state.certsArray[this.state.index].date).calendar()}
+                            stake={this.state.certsArray[this.state.index].stakePaid}
+                        />
+                    </div>
+                }
             </div>
         )
     }

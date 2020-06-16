@@ -2,18 +2,65 @@ import React, { Component } from 'react'
 import {Button, Modal, Card,} from 'react-bootstrap';
 
 import {X} from 'react-bootstrap-icons';
+import contractData from "./mock_contract";
+
+import { Magic } from "magic-sdk";
+import { TezosExtension } from "@magic-ext/tezos";
+
+import firebase from './firebase';
+require("firebase/firestore");
+var db = firebase.firestore();
+
+const magic = new Magic("pk_test_8363773537E9D19E", {
+    extensions: {
+        tezos: new TezosExtension({
+            rpcUrl: "https://tezos-dev.cryptonomic-infra.tech:443/"
+        })
+    }
+});
 
 class UnlockEarlyModal extends Component {
     constructor(props) {
         super(props)
-        this.state = {screen: 1,
-
+        this.state = {
+            screen: 1,
+            hash:''
         }
     }
 
-    unlock(){
-        console.log('here');
-        this.setState({screen: 2});
+    async unlock(){
+
+        const params = {
+            contract: contractData.address,
+            amount: 0,
+            fee: 100000,
+            derivationPath: '',
+            storageLimit: 20000,
+            gasLimit: 500000,
+            entrypoint: '',
+            parameters: `(Left (Right (Right (Right ${this.props.certificate_id}))))`,
+            parameterFormat: 'michelson'
+        };
+
+        const result = await magic.tezos.sendContractInvocationOperation(
+            params.contract,
+            params.amount,
+            params.fee,
+            params.derivationPath,
+            params.storageLimit,
+            params.gasLimit,
+            params.entrypoint,
+            params.parameters,
+            params.parameterFormat
+        );
+        console.log(`Injected operation`, result);
+
+        await db.collection("certificates").doc(this.props.certificate_id.toString()).set({
+            redeemed: true,
+        }, { merge: true })
+
+
+        this.setState({hash:result.operationGroupID, screen: 2});
     }
 
     hideModal(){

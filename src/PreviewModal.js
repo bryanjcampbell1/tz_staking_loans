@@ -8,7 +8,6 @@ import { TezosExtension } from "@magic-ext/tezos";
 import contractData from "./mock_contract";
 
 import firebase from './firebase';
-import {Tezos} from "@taquito/taquito";
 require("firebase/firestore");
 var db = firebase.firestore();
 
@@ -62,7 +61,7 @@ class PreviewModal extends Component {
             parameterFormat: 'michelson'
         };
 
-        /*
+
         const result = await magic.tezos.sendContractInvocationOperation(
             params.contract,
             params.amount,
@@ -75,22 +74,21 @@ class PreviewModal extends Component {
             params.parameterFormat
         );
         console.log(`Injected operation`, result);
-*/
+
         let nextId = lastId + 1;
         const publicAddress = await magic.tezos.getAccount();
-        await db.collection("certificates").add({
+
+        var docData = {
             id: nextId ,
             amount: this.props.deposit,
             stakePaid: this.props.stake,
             date: this.props.date,
             redeemed:false,
             owner:publicAddress
-        })
-        .then(function(docRef) {
-            console.log("Document written with ID: ", docRef.id);
-        })
-        .catch(function(error) {
-            console.error("Error adding document: ", error);
+
+        };
+        db.collection("certificates").doc(nextId.toString()).set(docData).then(function() {
+            console.log("Document successfully written!");
         });
 
         //increment last_Id

@@ -7,6 +7,10 @@ import { Magic } from "magic-sdk";
 import { TezosExtension } from "@magic-ext/tezos";
 import contractData from "./mock_contract";
 
+import firebase from './firebase';
+require("firebase/firestore");
+var db = firebase.firestore();
+
 const magic = new Magic("pk_test_8363773537E9D19E", {
     extensions: {
         tezos: new TezosExtension({
@@ -18,8 +22,9 @@ const magic = new Magic("pk_test_8363773537E9D19E", {
 class UnlockModal extends Component {
     constructor(props) {
         super(props)
-        this.state = {screen: 1, certificate_id:3, hash:''
-
+        this.state = {
+            screen: 1,
+            hash:''
         }
     }
 
@@ -33,7 +38,7 @@ class UnlockModal extends Component {
             storageLimit: 20000,
             gasLimit: 500000,
             entrypoint: '',
-            parameters: `(Left (Right (Right (Right ${this.state.certificate_id}))))`,
+            parameters: `(Left (Right (Right (Right ${this.props.certificate_id}))))`,
             parameterFormat: 'michelson'
         };
 
@@ -49,6 +54,12 @@ class UnlockModal extends Component {
             params.parameterFormat
         );
         console.log(`Injected operation`, result);
+
+        await db.collection("certificates").doc(this.props.certificate_id.toString()).set({
+            redeemed: true,
+        }, { merge: true })
+
+
         this.setState({hash:result.operationGroupID, screen: 2});
     }
 
