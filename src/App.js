@@ -45,10 +45,10 @@ export default class App extends React.Component {
     return (
         <div>
 
-          <Navbar style={{backgroundColor:'lightblue'}}>
-            <Navbar.Brand href="/" style={{marginLeft:5, fontWeight:'bold',}}>AccessStaking</Navbar.Brand>
+          <Navbar style={{backgroundColor:'#79BEDB'}}>
+            <Navbar.Brand href="/" style={{marginLeft:5, fontWeight:'bold',color:'darkslategrey'}}>AccessStaking</Navbar.Brand>
             <Nav>
-              <Nav.Link href="/Certificates" style={{ fontWeight:'bold',}}>Certificates</Nav.Link>
+              <Nav.Link href="/Certificates" style={{ fontWeight:'bold', color:'slate'}}>Certificates</Nav.Link>
             </Nav>
           </Navbar>
 
@@ -58,8 +58,7 @@ export default class App extends React.Component {
               <Route path="/Certificates" component={Certificates}/>
             </Switch>
           </Router>
-
-          <div style={ {backgroundColor:'lightblue', marginTop:50, height:150}}></div>
+          <div style={ {backgroundColor:'#79BEDB', marginTop:150, height:120}}></div>
         </div>
     );
   }
