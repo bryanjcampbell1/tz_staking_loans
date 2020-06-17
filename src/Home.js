@@ -6,10 +6,12 @@ import {Button,
         Card,
         FormControl,
         Form,
+        Alert
 } from 'react-bootstrap';
 
 import PreviewModal from "./PreviewModal";
 import moment from 'moment'
+import {X} from "react-bootstrap-icons";
 
 
 class Home extends Component {
@@ -25,6 +27,7 @@ class Home extends Component {
             returnRate: 0.01,
             unlockDate: moment(Date.now()).add(3, 'months').calendar(),
             months:3,
+            showAlert:false
         }
     }
 
@@ -146,8 +149,8 @@ class Home extends Component {
                                         <Form.Control as="select"
                                                       onChange={(e)=> this.chooseCurrency(e.target.value)}>
                                             <option>XTZ</option>
-                                            <option>USDtz</option>
-                                            <option>tzBTC</option>
+                                            <option>USDtz (Coming Soon!)</option>
+                                            <option>tzBTC (Coming Soon!)</option>
                                         </Form.Control>
                                     </Form.Group>
 
@@ -189,6 +192,29 @@ class Home extends Component {
                     date={this.state.unlockDate}
                     months={this.state.months}
                 />
+                {
+                    (this.state.showAlert)?
+                        <div style={{
+                            position: 'absolute',
+                            top: '40% ',
+                            right: '50%'
+                        }}>
+                        <Alert variant='danger'
+                               style={{
+                                   position: 'relative',
+                                   right: '-50%'
+                               }}>
+                            <div style={{display:'flex', justifyContent:'flex-end'}}>
+                                <X color="maroon" size={20} onClick={() => this.setState({showAlert:false})}/>
+                            </div>
+                            <p style={{display:'flex', justifyContent:'flex-start', marginTop:0, }}>
+                                Insufficient funds. Try sending a smaller amount or replenish account balance.
+                            </p>
+                        </Alert>
+                            </div>
+                        :
+                        <div></div>
+                }
             </div>
         )
     }

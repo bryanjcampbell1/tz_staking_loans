@@ -35,6 +35,7 @@ const Landing = observer(
           const publicAddress = await magic.tezos.getAccount();
           setPublicAddress(publicAddress);
           setUserMetadata(await magic.user.getMetadata());
+          store.setPublicAddress(publicAddress);
           store.setIsLoggedIn(true);
         }
       });

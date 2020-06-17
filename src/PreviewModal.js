@@ -51,7 +51,7 @@ class PreviewModal extends Component {
 
         const params = {
             contract: contractData.address,
-            amount: (this.props.deposit+1)*1000000,
+            amount: (this.props.deposit+1)*100000,
             fee: 100000,
             derivationPath: '',
             storageLimit: 20000,
@@ -61,42 +61,49 @@ class PreviewModal extends Component {
             parameterFormat: 'michelson'
         };
 
+        try {
+            const result = await magic.tezos.sendContractInvocationOperation(
+                params.contract,
+                params.amount,
+                params.fee,
+                params.derivationPath,
+                params.storageLimit,
+                params.gasLimit,
+                params.entrypoint,
+                params.parameters,
+                params.parameterFormat
+            );
 
-        const result = await magic.tezos.sendContractInvocationOperation(
-            params.contract,
-            params.amount,
-            params.fee,
-            params.derivationPath,
-            params.storageLimit,
-            params.gasLimit,
-            params.entrypoint,
-            params.parameters,
-            params.parameterFormat
-        );
-        console.log(`Injected operation`, result);
+            console.log(`Injected operation`, result);
 
-        let nextId = lastId + 1;
-        const publicAddress = await magic.tezos.getAccount();
+            let nextId = lastId + 1;
+            const publicAddress = await magic.tezos.getAccount();
 
-        var docData = {
-            id: nextId ,
-            amount: this.props.deposit,
-            stakePaid: this.props.stake,
-            date: this.props.date,
-            redeemed:false,
-            owner:publicAddress
+            var docData = {
+                id: nextId ,
+                amount: this.props.deposit,
+                stakePaid: this.props.stake,
+                date: this.props.date,
+                redeemed:false,
+                owner:publicAddress
 
-        };
-        db.collection("certificates").doc(nextId.toString()).set(docData).then(function() {
-            console.log("Document successfully written!");
-        });
+            };
+            db.collection("certificates").doc(nextId.toString()).set(docData).then(function() {
+                console.log("Document successfully written!");
+            });
 
-        //increment last_Id
-        const increment = firebase.firestore.FieldValue.increment(1)
-        await lastIdRef.update({ last_Id: increment });
+            //increment last_Id
+            const increment = firebase.firestore.FieldValue.increment(1)
+            await lastIdRef.update({ last_Id: increment });
+
+            this.setState({screen: 2});
+
+        } catch(err) {
+
+            alert(err);
+        }
 
 
-        this.setState({screen: 2});
     }
 
     hideModal(){

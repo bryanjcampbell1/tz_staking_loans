@@ -226,7 +226,7 @@ class Certificates extends React.Component {
                             onHide={() => this.hideModals()}
                             amount={this.state.certsArray[this.state.index].amount}
                             date={ moment(this.state.certsArray[this.state.index].date).calendar()}
-                            certificate_id={this.state.certsArray[this.state.index].id}
+                            tokenId={this.state.certsArray[this.state.index].id}
                         />
                         <UnlockEarlyModal
                             show={this.state.unlockEarlyModalShow}
