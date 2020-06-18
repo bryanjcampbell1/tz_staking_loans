@@ -224,7 +224,7 @@ class Certificates extends React.Component {
                         <SendModal
                             show={this.state.sendModalShow}
                             onHide={() => this.hideModals()}
-                            amount={this.state.certsArray[this.state.index].amount}
+                            //amount={this.state.certsArray[this.state.index].amount}
                             date={ moment(this.state.certsArray[this.state.index].date).calendar()}
                             tokenId={this.state.certsArray[this.state.index].id}
                         />
