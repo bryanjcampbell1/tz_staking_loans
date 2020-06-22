@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Button, Row, Col, Card } from 'react-bootstrap';
+import React from "react";
+import { Button, Row, Col, Card, Spinner } from 'react-bootstrap';
 import SendModal from "./SendModal";
 import UnlockEarlyModal from "./UnlockEarlyModal";
 import UnlockModal from "./UnlockModal";
@@ -8,7 +8,6 @@ import moment from 'moment';
 import { Magic } from "magic-sdk";
 import { TezosExtension } from "@magic-ext/tezos";
 
-import contractData from "./mock_contract";
 
 import firebase from './firebase';
 require("firebase/firestore");
@@ -109,8 +108,14 @@ class Certificates extends React.Component {
             sendModalShow: false,
             unlockModalShow:false,
             unlockEarlyModalShow:false,
-            certsArray: [],
-            index:0
+            certsArray: [{
+                id: 0,
+                amount: 0,
+                stakePaid:0,
+                date: 0
+            }],
+            index:0,
+            showSpinner:true
         }
     }
 
@@ -124,6 +129,7 @@ class Certificates extends React.Component {
             let query = certsRef.where("owner", "==", publicAddress ).where("redeemed", "==", false);
 
             let certificates = []
+
             await query.get()
                 .then(function(querySnapshot) {
                     querySnapshot.forEach(function(doc) {
@@ -138,7 +144,7 @@ class Certificates extends React.Component {
                 });
 
             console.log(certificates);
-            this.setState({certsArray:certificates })
+            this.setState({certsArray:certificates, showSpinner:false })
 
         } catch (error) {
 
@@ -156,6 +162,7 @@ class Certificates extends React.Component {
         let query = certsRef.where("owner", "==", publicAddress ).where("redeemed", "==", false);
 
         let certificates = []
+
         await query.get()
             .then(function(querySnapshot) {
                 querySnapshot.forEach(function(doc) {
@@ -169,11 +176,24 @@ class Certificates extends React.Component {
                 console.log("Error getting documents: ", error);
             });
 
+        if(certificates.length == 0 ){
+            certificates.push({
+                id: 0,
+                amount: 0,
+                stakePaid:0,
+                date: 0
+            });
+
+        }
+
         console.log(certificates);
-        this.setState({certsArray:certificates,
+        this.setState({
+            certsArray:certificates,
             unlockEarlyModalShow:false,
             unlockModalShow: false,
-            sendModalShow:false })
+            sendModalShow:false,
+            showSpinner:false
+        })
 
     }
 
@@ -188,36 +208,55 @@ class Certificates extends React.Component {
                 </Row>
                 <Row>
                     <Col></Col>
+
+
+
+
                     <Col style={{   display:'flex',
                                     justifyContent:'center',
                                     alignItems:'center',
                                     flexDirection:'column',
                                     marginTop:-15
                                     }}>
-                        {
-                            this.state.certsArray.map((row, key) =>
-                                <div style={{marginTop:20}}>
-                                    <Certificate amount={row.amount}
-                                                 date={row.date}
-                                                 id={row.id}
-                                                 showSend={() => this.setState({sendModalShow:true, index:key})}
-                                                 showUnlock={() => this.setState({unlockModalShow:true, index:key})}
-                                                 showUnlockEarly={() => this.setState({unlockEarlyModalShow:true, index:key})}
-                                                 unlocked={Date.now() > Date.parse(row.date) }
-                                    />
-                                </div>
-                            )
-                        }
-                        { (this.state.certsArray.length === 0)?
-                            <div style={{height:600}}></div>
+
+
+
+                        { (this.state.certsArray[0].date == 0)?
+                            <div style={{
+                                height:600,
+                                display:'flex',
+                                justifyContent:'center',
+                                marginTop:150
+                            }}>
+                                { (this.state.showSpinner)?
+                                    <Spinner animation="border" variant="primary" />
+                                :
+                                    <div></div>
+                                }
+                            </div>
                             :
                             <div>
+                                {
+                                    this.state.certsArray.map((row, key) =>
+                                        <div style={{marginTop:20}}>
+                                            <Certificate amount={row.amount}
+                                                         date={row.date}
+                                                         id={row.id}
+                                                         showSend={() => this.setState({sendModalShow:true, index:key})}
+                                                         showUnlock={() => this.setState({unlockModalShow:true, index:key})}
+                                                         showUnlockEarly={() => this.setState({unlockEarlyModalShow:true, index:key})}
+                                                         unlocked={Date.now() > Date.parse(row.date) }
+                                            />
+                                        </div>
+                                    )
+                                }
                             </div>
                         }
                     </Col>
+
                     <Col></Col>
                 </Row>
-                { (this.state.certsArray.length === 0)?
+                { (this.state.certsArray[0].date === 0)?
                     <div></div>
                     :
                     <div>
