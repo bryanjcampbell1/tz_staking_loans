@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Nav } from 'react-bootstrap';
+import {Navbar, Nav, Button} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 
@@ -9,71 +9,92 @@ import {
   Route,
 } from "react-router-dom";
 
+import { LinkContainer } from "react-router-bootstrap";
+
+
 import {observer} from 'mobx-react';
 import store from './store.js';
 
-
-
+import Home from "./Home";
 import Landing from "./Landing";
 import Certificates from './Certificates'
 
+import {Magic} from "magic-sdk";
+import {TezosExtension} from "@magic-ext/tezos";
+
+const magic = new Magic("pk_test_8363773537E9D19E", {
+    extensions: {
+        tezos: new TezosExtension({
+            rpcUrl: "https://tezos-dev.cryptonomic-infra.tech:443/"
+        })
+    }
+});
+
+store.setMagic(magic);
+
+
 const App = observer(
-    class App extends React.Component {
+    function App() {
 
-      state = { storageValue: 0, web3: null, accounts: null, contract: null };
+        const logout = async () => {
+            console.log("here");
+            await magic.user.logout();
+            store.setIsLoggedIn(false);
+        };
 
-      componentDidMount = async () => {
-        try {
-          // Get network provider and web3 instance.
-         // const web3 = await getWeb3();
-
-          // Use web3 to get the user's accounts.
-         // const accounts = await web3.eth.getAccounts();
-
-          // Get the contract instance.
-         // const networkId = await web3.eth.net.getId();
-
-          // Set web3, accounts, and contract to the state, and then proceed with an
-          // example of interacting with the contract's methods.
-         // this.setState({ web3, accounts, });
-        } catch (error) {
-          // Catch any errors for any of the above operations.
-          alert(
-              `Failed to load web3, accounts, or contract. Check console for details.`,
-          );
-          console.error(error);
-        }
-      }
-
-      render() {
         return (
-            <div>
+            <Router>
+                <div>
+                    <Navbar style={{backgroundColor: '#79BEDB'}}>
+                        <LinkContainer to="/">
+                            <Navbar.Brand style={{
+                                marginLeft: 5,
+                                fontWeight: 'bold',
+                                color: 'darkslategrey'
+                            }}>AccessStaking</Navbar.Brand>
+                        </LinkContainer>
+                        {
+                            (store.isLoggedIn) ?
+                                <div>
+                                    <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+                                    <Navbar.Collapse id="basic-navbar-nav">
+                                        <Nav className="mr-auto">
+                                            <LinkContainer to="/Certificates">
+                                                <Nav.Link
+                                                    style={{fontWeight: 'bold', color: 'slate'}}>Certificates</Nav.Link>
+                                            </LinkContainer>
+                                        </Nav>
 
-              <Navbar style={{backgroundColor:'#79BEDB'}}>
-                <Navbar.Brand href="/" style={{marginLeft:5, fontWeight:'bold',color:'darkslategrey'}}>AccessStaking</Navbar.Brand>
-                  {
-                      (store.isLoggedIn)?
-                          <div>
-                              <Nav>
-                                  <Nav.Link href="/Certificates" style={{ fontWeight:'bold', color:'slate'}}>Certificates</Nav.Link>
-                              </Nav>
-                          </div>
-                   :
-                          <div></div>
-                  }
-              </Navbar>
+                                    </Navbar.Collapse>
+                                    <div className="topRightCorner">
+                                        <Button variant="outline-secondary" onClick={logout}>Logout</Button>
+                                    </div>
+                                </div>
+                                :
+                                <div></div>
+                        }
 
-              <Router>
-                <Switch>
-                  <Route exact path="/" component={Landing}/>
-                  <Route path="/Certificates" component={Certificates}/>
-                </Switch>
-              </Router>
-              <div style={ {backgroundColor:'#79BEDB', marginTop:150, height:120}}></div>
-            </div>
+                    </Navbar>
+                    <Switch>
+                        <Route path="/Certificates">
+                            <Certificates/>
+                        </Route>
+                        <Route path="/">
+                            {
+                                (store.isLoggedIn) ?
+                                    <Home/>
+                                    :
+                                    <Landing/>
+                            }
+                        </Route>
+                    </Switch>
+                </div>
+                <div style={{backgroundColor: '#79BEDB', marginTop: 150, height: 120}}></div>
+            </Router>
         );
-      }
     }
 );
+
+
 
 export default App

@@ -55,9 +55,9 @@ input.full-width {
 }
 
 .topRightCorner {
-  margin: 10;
+
   position: absolute;
-  top: 2%;
+  top:15%;
   right: 2%;
 
 }

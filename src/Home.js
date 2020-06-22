@@ -13,6 +13,8 @@ import PreviewModal from "./PreviewModal";
 import moment from 'moment'
 import {X} from "react-bootstrap-icons";
 
+import store from './store.js';
+
 
 class Home extends Component {
     constructor(props) {
@@ -31,20 +33,6 @@ class Home extends Component {
         }
     }
 
-    componentDidMount = async () => {
-        try {
-
-            //const web3 = await getWeb3();
-            //const accounts = await web3.eth.getAccounts();
-
-            //await this.setState({ web3, accounts, } );
-            //this.getData();
-
-        } catch (error) {
-
-            console.error(error);
-        }
-    }
 
     hideModals(){
         this.setState({previewModalShow: false, })
@@ -105,6 +93,15 @@ class Home extends Component {
     render() {
         return (
             <div>
+                <div style={{display:"flex", alignItems:'flex-end', flexDirection:'column', marginRight:10}}>
+                    <a  style={{fontWeight:'bold', fontSize:16, color:'slate'}}
+                        href={`https://carthagenet.tzstats.com/${store.publicAddress}`}
+                        target="_blank"
+                    >
+                        {store.publicAddress}
+                    </a>
+                    <p style={{fontWeight:'bold', fontSize:16, color:'slate'}}>{store.userMetadata.email}</p>
+                </div>
                 <div style={{display:'flex', justifyContent:'center'}}>
                     <p style={{fontWeight:'bold', fontSize:44, color:'DodgerBlue',
                         textShadow: "2px 4px 3px rgba(0,0,0,0.3)" }}>Seize Your Stake</p>

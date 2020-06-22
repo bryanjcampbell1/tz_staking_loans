@@ -1,6 +1,4 @@
-import React from 'react';
 import {observable} from 'mobx';
-
 
 const store = observable({
     email:'',
@@ -10,9 +8,6 @@ const store = observable({
     magic: {},
     setMagic: m => {
         store.magic = m;
-    },
-    setEmail: e => {
-        store.email = e;
     },
     setPublicAddress: p => {
         store.publicAddress = p;
@@ -25,6 +20,5 @@ const store = observable({
     },
 
 });
-
 
 export default store;
