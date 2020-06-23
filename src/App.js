@@ -1,5 +1,5 @@
 import React from "react";
-import {Navbar, Nav, Button} from 'react-bootstrap';
+import {Navbar, Nav, Button, Image} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 
@@ -14,6 +14,8 @@ import { LinkContainer } from "react-router-bootstrap";
 
 import {observer} from 'mobx-react';
 import store from './store.js';
+
+import Symbol from './symbol.png';
 
 import Home from "./Home";
 import Landing from "./Landing";
@@ -46,12 +48,12 @@ const App = observer(
             <Router>
                 <div>
                     <Navbar style={{backgroundColor: '#79BEDB'}}>
-                        <LinkContainer to="/">
-                            <Navbar.Brand style={{
-                                marginLeft: 5,
-                                fontWeight: 'bold',
-                                color: 'darkslategrey'
-                            }}>AccessStaking</Navbar.Brand>
+                        <LinkContainer to="/" style={{
+                            marginLeft: 5,
+                            fontWeight: 'bold',
+                            color: 'darkslategrey'
+                        }}>
+                            <Navbar.Brand> <Image src={Symbol} style={{width:30,height:30,marginRight:5,marginTop:-2}} /> AccessStaking</Navbar.Brand>
                         </LinkContainer>
                         {
                             (store.isLoggedIn) ?
@@ -59,9 +61,8 @@ const App = observer(
                                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                                     <Navbar.Collapse id="basic-navbar-nav">
                                         <Nav className="mr-auto">
-                                            <LinkContainer to="/Certificates">
-                                                <Nav.Link
-                                                    style={{fontWeight: 'bold', color: 'slate'}}>Certificates</Nav.Link>
+                                            <LinkContainer to="/Certificates" style={{fontWeight: 'bold', color: 'slate'}}>
+                                                <Nav.Link>Certificates</Nav.Link>
                                             </LinkContainer>
                                         </Nav>
 
