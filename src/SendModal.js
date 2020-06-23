@@ -3,22 +3,14 @@ import {Button, Modal, Card, Row, Form, InputGroup, FormControl,} from 'react-bo
 
 import {X} from 'react-bootstrap-icons';
 
-import { Magic } from "magic-sdk";
-import { TezosExtension } from "@magic-ext/tezos";
-import contractData from "./mock_contract";
+import contractData from "./contract";
 import store from './store.js';
 
 import firebase from './firebase';
 require("firebase/firestore");
 var db = firebase.firestore();
 
-const magic = new Magic("pk_test_8363773537E9D19E", {
-    extensions: {
-        tezos: new TezosExtension({
-            rpcUrl: "https://tezos-dev.cryptonomic-infra.tech:443/"
-        })
-    }
-});
+const magic =store.magic
 
 class SendModal extends Component {
     constructor(props) {
@@ -37,16 +29,9 @@ class SendModal extends Component {
             derivationPath: '',
             storageLimit: 20000,
             gasLimit: 500000,
-            //entrypoint: '',
-
             entrypoint: 'transfer',
-            parameters: '{ Pair "tz1a1AwoH8M7KkrvtxJfx4X7HEwj2WxMPFsk" {Pair "tz1XJ5gwanu461jr28UaANNmYuaSLeHDHNEj" (Pair 32 1)} }',
-            //parameters: `(Right (Right (Right (Left { Pair ${store.publicAddress} {Pair ${this.state.sendAddress} (Pair ${this.props.tokenId} 1)} }))))`,
-            //parameters: `(Right (Right (Right (Left { Pair "tz1a1AwoH8M7KkrvtxJfx4X7HEwj2WxMPFsk" {Pair "tz1XJ5gwanu461jr28UaANNmYuaSLeHDHNEj" (Pair 32 1)} }))))`,
-            //parameters: `(Right (Right (Right (Left  Pair tz1a1AwoH8M7KkrvtxJfx4X7HEwj2WxMPFsk {Pair tz1XJ5gwanu461jr28UaANNmYuaSLeHDHNEj (Pair 32 1)} ))))`,
+            parameters: `{ Pair ${store.publicAddress} {Pair ${this.state.sendAddress} (Pair ${this.props.tokenId} 1)} }`,
             parameterFormat: 'michelson'
-
-                //`(Right (Right (Right (Left { Pair "tz1a1AwoH8M7KkrvtxJfx4X7HEwj2WxMPFsk" {Pair "tz1XJ5gwanu461jr28UaANNmYuaSLeHDHNEj" (Pair 0 1)} }))))`,
         };
 
 

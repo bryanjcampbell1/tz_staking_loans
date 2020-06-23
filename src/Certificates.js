@@ -5,21 +5,14 @@ import UnlockEarlyModal from "./UnlockEarlyModal";
 import UnlockModal from "./UnlockModal";
 
 import moment from 'moment';
-import { Magic } from "magic-sdk";
-import { TezosExtension } from "@magic-ext/tezos";
+import store from './store.js';
 
 
 import firebase from './firebase';
 require("firebase/firestore");
 var db = firebase.firestore();
 
-const magic = new Magic("pk_test_8363773537E9D19E", {
-    extensions: {
-        tezos: new TezosExtension({
-            rpcUrl: "https://tezos-dev.cryptonomic-infra.tech:443/"
-        })
-    }
-});
+const magic = store.magic
 
 /*
 
@@ -263,7 +256,7 @@ class Certificates extends React.Component {
                         <SendModal
                             show={this.state.sendModalShow}
                             onHide={() => this.hideModals()}
-                            //amount={this.state.certsArray[this.state.index].amount}
+                            amount={this.state.certsArray[this.state.index].amount}
                             date={ moment(this.state.certsArray[this.state.index].date).calendar()}
                             tokenId={this.state.certsArray[this.state.index].id}
                         />

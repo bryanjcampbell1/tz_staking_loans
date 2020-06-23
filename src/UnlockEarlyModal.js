@@ -2,22 +2,15 @@ import React, { Component } from 'react'
 import {Button, Modal, Card,} from 'react-bootstrap';
 
 import {X} from 'react-bootstrap-icons';
-import contractData from "./mock_contract";
+import contractData from "./contract";
 
-import { Magic } from "magic-sdk";
-import { TezosExtension } from "@magic-ext/tezos";
+import store from './store.js';
 
 import firebase from './firebase';
 require("firebase/firestore");
 var db = firebase.firestore();
 
-const magic = new Magic("pk_test_8363773537E9D19E", {
-    extensions: {
-        tezos: new TezosExtension({
-            rpcUrl: "https://tezos-dev.cryptonomic-infra.tech:443/"
-        })
-    }
-});
+const magic = store.magic
 
 class UnlockEarlyModal extends Component {
     constructor(props) {
