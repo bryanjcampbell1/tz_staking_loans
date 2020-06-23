@@ -7,10 +7,19 @@ import contractData from "./contract";
 import store from './store.js';
 
 import firebase from './firebase';
+import {Magic} from "magic-sdk";
+import {TezosExtension} from "@magic-ext/tezos";
+
 require("firebase/firestore");
 var db = firebase.firestore();
 
-const magic = store.magic
+const magic = new Magic("pk_test_8363773537E9D19E", {
+    extensions: {
+        tezos: new TezosExtension({
+            rpcUrl: "https://tezos-dev.cryptonomic-infra.tech:443/"
+        })
+    }
+});
 
 class UnlockEarlyModal extends Component {
     constructor(props) {

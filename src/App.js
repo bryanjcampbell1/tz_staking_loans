@@ -7,6 +7,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  useHistory
 } from "react-router-dom";
 
 import { LinkContainer } from "react-router-bootstrap";
@@ -38,11 +39,22 @@ store.setMagic(magic);
 const App = observer(
     function App() {
 
-        const logout = async () => {
-            console.log("here");
-            await magic.user.logout();
-            store.setIsLoggedIn(false);
-        };
+
+        const LogoutButton = () => (
+            <Route render={({ history}) => (
+                <Button
+                    variant="outline-secondary"
+                    onClick={async () => {
+                        console.log("here");
+                        await magic.user.logout();
+                        store.setIsLoggedIn(false);
+                        history.push('/')
+                    }}
+                >
+                    Logout
+                </Button>
+            )} />
+        )
 
         return (
             <Router>
@@ -62,13 +74,13 @@ const App = observer(
                                     <Navbar.Collapse id="basic-navbar-nav">
                                         <Nav className="mr-auto">
                                             <LinkContainer to="/Certificates" style={{fontWeight: 'bold', color: 'slate'}}>
-                                                <Nav.Link>Certificates</Nav.Link>
+                                                <Nav.Link style={{fontWeight: 'bold', color: 'slate'}}>Certificates</Nav.Link>
                                             </LinkContainer>
                                         </Nav>
 
                                     </Navbar.Collapse>
                                     <div className="topRightCorner">
-                                        <Button variant="outline-secondary" onClick={logout}>Logout</Button>
+                                        <LogoutButton/>
                                     </div>
                                 </div>
                                 :
@@ -90,7 +102,7 @@ const App = observer(
                         </Route>
                     </Switch>
                 </div>
-                <div style={{backgroundColor: '#79BEDB', marginTop: 120, height: 120}}></div>
+                <div style={{backgroundColor: '#79bedb', marginTop: 120, height: 120}}></div>
             </Router>
         );
     }
