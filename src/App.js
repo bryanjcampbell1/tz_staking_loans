@@ -90,7 +90,7 @@ const App = observer(
                         </Route>
                     </Switch>
                 </div>
-                <div style={{backgroundColor: '#79BEDB', marginTop: 150, height: 120}}></div>
+                <div style={{backgroundColor: '#79BEDB', marginTop: 120, height: 120}}></div>
             </Router>
         );
     }
